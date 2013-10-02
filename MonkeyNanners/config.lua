@@ -4,9 +4,9 @@ application =
 {
 	content =
 	{
-		width = 480,
-		height = 640,
-		scale = "letterbox",
+		width = 720,
+		height = 1280,
+		scale = "zoomEven",
 		xAlign = "center",
 		yAlign = "center"
 	},

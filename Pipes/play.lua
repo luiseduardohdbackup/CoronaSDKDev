@@ -1,6 +1,27 @@
 local storyboard = require( "storyboard" )
 local scene = storyboard.newScene()
 
+function scene:updateBoard()
+	self.gameBoard:light()
+	for column=1,self.gameData.board.columns do
+		for row=1,self.gameData.board.rows do
+			self.board[column][row]:setSequence(self.gameBoard.columns[column][row]:getSequenceName())
+			self.board[column][row]:setFrame(self.gameBoard.columns[column][row]:getFrame())
+		end
+	end
+	if self.gameBoard:isSolved() then
+		storyboard.gotoScene("mainMenu","crossFade")
+	end
+	self.gameBoard:unlight()
+end
+
+function scene:tap(event)
+	if event.target.boardColumn~=nil then
+		self.gameBoard.columns[event.target.boardColumn][event.target.boardRow]:rotateCW()
+		self:updateBoard()
+	end
+end
+
 function scene:createScene( event )
     local group = self.view
 	self.gameData = event.params
@@ -8,21 +29,26 @@ function scene:createScene( event )
 	self.board = {}
 	while #self.board<self.gameData.board.columns do
 		local column = {}
+		table.insert(self.board,column)
 		while #column<self.gameData.board.rows do
 			local theSprite = display.newSprite(group,self.gameData.pipeImageSheet,self.gameData.pipeSequences)
-			theSprite.x = self.gameData.bounds.left + self.gameData.cell.width * #self.board + self.gameData.board.x
-			theSprite.y = self.gameData.bounds.top + self.gameData.cell.height * #column + self.gameData.board.y
-			theSprite:setSequence("green")
-			theSprite:setFrame(math.random(16))
 			table.insert(column,theSprite)
+			theSprite.x = self.gameData.board.x + self.gameData.cell.width * (#self.board-1) + self.gameData.cell.width/2
+			theSprite.y = self.gameData.board.y + self.gameData.cell.height * (#column-1) + self.gameData.cell.height/2
+			theSprite.boardColumn = #self.board
+			theSprite.boardRow = #column
+			theSprite:addEventListener("tap",self)
 		end
-		table.insert(self.board,column)
 	end
 end
 
 -- Called BEFORE scene has moved onscreen:
 function scene:willEnterScene( event )
-        local group = self.view
+    local group = self.view
+	self.gameBoard = self.gameData.board.newBoard(self.gameData.cell,self.gameData.board.columns,self.gameData.board.rows)
+	self.gameBoard:generate()
+	self.gameBoard:scramble()
+	self:updateBoard()
 end
 
 

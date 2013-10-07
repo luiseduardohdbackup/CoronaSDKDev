@@ -5,21 +5,9 @@ local scene = storyboard.newScene()
 function scene:createScene( event )
     local group = self.view
 	display.newImage(group,"background.png")
-	display.newText({
-		parent = group,
-		text="splash",
-		x=display.contentCenterX,
-		y=display.contentCenterY,
-		font=native.systemFont,
-		fontSize=128,
-		align="center"
-	}):setTextColor(0,0,0)
-	self.gameData = event.params
-	--local theSprite = display.newSprite(group,self.gameData.pipeImageSheet,self.gameData.pipeSequences)
-	--theSprite.x = display.contentCenterX
-	--theSprite.y = display.contentCenterY
-	--theSprite:setSequence("white")
-	--theSprite:setFrame(1)
+	local logo = display.newImage(group,"pdglogo.png")
+	logo.x = display.contentCenterX
+	logo.y = display.contentCenterY
 end
 
 function scene:timer(event)

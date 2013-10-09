@@ -19,4 +19,22 @@ settings =
 			},
 		},
 	},
+    plugins =
+    {
+        -- key is the name passed to Lua's 'require()'
+        ["CoronaProvider.ads.admob"] =
+        {
+            -- required
+            publisherId = "com.coronalabs",
+        },
+    }, 
+   android =
+   {
+      usesPermissions =
+      {
+         "android.permission.INTERNET",
+         "android.permission.ACCESS_NETWORK_STATE",
+         "android.permission.READ_PHONE_STATE",
+      },
+   },
 }

@@ -24,6 +24,10 @@ function scene:createScene( event )
 	self.gameData = event.params
 	display.newImage(group,"background.png")
 
+	local titleImage = display.newImage(group,"title.png")
+	titleImage.x = display.contentCenterX
+	titleImage.y = display.contentCenterY
+
 	self.playButton = display.newImage(group,"longbutton.png")
 	self.playButton.x = display.contentCenterX
 	self.playButton.y = self.gameData.bounds.bottom - self.playButton.height
@@ -38,33 +42,33 @@ function scene:createScene( event )
 		align="center"
 	}):setTextColor(255,255,255)
 
-	self.helpButton = display.newImage(group,"longbutton.png")
-	self.helpButton.x = self.gameData.bounds.left + self.helpButton.width
-	self.helpButton.y = self.gameData.bounds.bottom - self.helpButton.height
-	self.helpButton:addEventListener("tap",self)
-	display.newText({
-		parent = group,
-		text="Help",
-		x=self.helpButton.x,
-		y=self.helpButton.y,
-		font=native.systemFont,
-		fontSize=48,
-		align="center"
-	}):setTextColor(255,255,255)
+	--self.helpButton = display.newImage(group,"longbutton.png")
+	--self.helpButton.x = self.gameData.bounds.left + self.helpButton.width
+	--self.helpButton.y = self.gameData.bounds.bottom - self.helpButton.height
+	--self.helpButton:addEventListener("tap",self)
+	--display.newText({
+		--parent = group,
+		--text="Help",
+		--x=self.helpButton.x,
+		--y=self.helpButton.y,
+		--font=native.systemFont,
+		--fontSize=48,
+		--align="center"
+	--}):setTextColor(255,255,255)
 
-	self.aboutButton = display.newImage(group,"longbutton.png")
-	self.aboutButton.x = self.gameData.bounds.right - self.aboutButton.width
-	self.aboutButton.y = self.gameData.bounds.bottom - self.aboutButton.height
-	self.aboutButton:addEventListener("tap",self)
-	display.newText({
-		parent = group,
-		text="About",
-		x=self.aboutButton.x,
-		y=self.aboutButton.y,
-		font=native.systemFont,
-		fontSize=48,
-		align="center"
-	}):setTextColor(255,255,255)
+	--self.aboutButton = display.newImage(group,"longbutton.png")
+	--self.aboutButton.x = self.gameData.bounds.right - self.aboutButton.width
+	--self.aboutButton.y = self.gameData.bounds.bottom - self.aboutButton.height
+	--self.aboutButton:addEventListener("tap",self)
+	--display.newText({
+		--parent = group,
+		--text="About",
+		--x=self.aboutButton.x,
+		--y=self.aboutButton.y,
+		--font=native.systemFont,
+		--fontSize=48,
+		--align="center"
+	--}):setTextColor(255,255,255)
 end
 
 function scene:tap(event)

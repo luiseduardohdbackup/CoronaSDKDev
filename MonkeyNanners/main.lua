@@ -13,6 +13,8 @@ local banana
 local sadmonkeys={}
 local happymonkeys={}
 
+
+
 function createBackground()
 	local theBackground = display.newImage("background.png")
 	return theBackground
@@ -53,6 +55,9 @@ function spawnSadMonkey()
 		theSadMonkey.x = display.contentCenterX+display.viewableContentWidth/2
 		theSadMonkey.y = display.contentCenterY-display.viewableContentHeight/2 + math.random() * display.viewableContentHeight
 	end
+	local angle = math.random() * math.pi
+	theSadMonkey.deltaX = math.cos(angle) * sadSpeed
+	theSadMonkey.deltaY = math.sin(angle) * sadSpeed
 end
 function moveMonkeys()
 	local indices
@@ -84,8 +89,18 @@ function moveMonkeys()
 			monkey:removeSelf()
 			table.insert(indices,1,index)
 		end
-		monkey.x = monkey.x + sadSpeed * deltaX/distance
-		monkey.y = monkey.y + sadSpeed * deltaY/distance
+		monkey.x = monkey.x + monkey.deltaX
+		monkey.y = monkey.y + monkey.deltaY
+		if monkey.x < left then
+			monkey.x = monkey.x + right - left
+		elseif monkey.x>right then
+			monkey.x = monkey.x - right + left
+		end
+		if monkey.y<top then
+			monkey.y = monkey.y + bottom - top
+		elseif monkey.y>bottom then
+			monkey.y = monkey.y - bottom + top
+		end
 	end
 	for index,value in pairs(indices) do
 		table.remove(sadmonkeys,value)

@@ -86,21 +86,21 @@ function gameData.cell.newCell()
 	function theCell:getSequenceName()
 		if self.powered then
 			if self:getFrame()~=self.originalFrame then
-				return "white"
-			else
 				return "yellow"
+			else
+				return "white"
 			end
 		elseif self.lit then
 			if self:getFrame()~=self.originalFrame then
-				return "cyan"
-			else
 				return "green"
+			else
+				return "cyan"
 			end
 		else
 			if self:getFrame()~=self.originalFrame then
-				return "magenta"
-			else
 				return "red"
+			else
+				return "magenta"
 			end
 		end
 	end

@@ -40,6 +40,10 @@ function scene:createScene( event )
 	self.roomDoorUp.y = 40
 	self.roomDoorUp.isVisible = false
 	
+	self.torchLight = display.newImage(group,"LanternLight.png")
+	self.torchLight.x = 320
+	self.torchLight.y = 160
+	
 	self.moveForwardButton = display.newImage(group,"MoveForward.png")
 	self.moveForwardButton.x = 300
 	self.moveForwardButton.y = 340

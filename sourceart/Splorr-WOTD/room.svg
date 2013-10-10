@@ -7,6 +7,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="640"
@@ -16,7 +17,130 @@
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="room.svg">
   <defs
-     id="defs4" />
+     id="defs4">
+    <linearGradient
+       id="linearGradient3851">
+      <stop
+         style="stop-color:#000000;stop-opacity:0.50196081;"
+         offset="0"
+         id="stop3853" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="1"
+         id="stop3855" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3851"
+       id="radialGradient3857"
+       cx="320"
+       cy="-200"
+       fx="320"
+       fy="-200"
+       r="320"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3851-7"
+       id="radialGradient3857-1"
+       cx="320"
+       cy="-200"
+       fx="320"
+       fy="-200"
+       r="320"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient3851-7">
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="0"
+         id="stop3853-4" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="1"
+         id="stop3855-0" />
+    </linearGradient>
+    <radialGradient
+       gradientTransform="translate(680,732.3622)"
+       r="320"
+       fy="-200"
+       fx="320"
+       cy="-200"
+       cx="320"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3874"
+       xlink:href="#linearGradient3851-7"
+       inkscape:collect="always" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3851-8"
+       id="radialGradient3857-4"
+       cx="320"
+       cy="-200"
+       fx="320"
+       fy="-200"
+       r="320"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient3851-8">
+      <stop
+         style="stop-color:#000000;stop-opacity:0.75294119;"
+         offset="0"
+         id="stop3853-8" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="1"
+         id="stop3855-2" />
+    </linearGradient>
+    <radialGradient
+       gradientTransform="translate(-679.99997,732.36223)"
+       r="320"
+       fy="-200"
+       fx="320"
+       cy="-200"
+       cx="320"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3908"
+       xlink:href="#linearGradient3851-8"
+       inkscape:collect="always" />
+    <radialGradient
+       gradientTransform="translate(680,732.3622)"
+       r="320"
+       fy="-200"
+       fx="320"
+       cy="-200"
+       cx="320"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3874-5"
+       xlink:href="#linearGradient3851-7-5"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient3851-7-5">
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="0"
+         id="stop3853-4-1" />
+      <stop
+         id="stop3961"
+         offset="0.5"
+         style="stop-color:#000000;stop-opacity:0;" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="1"
+         id="stop3855-0-7" />
+    </linearGradient>
+    <radialGradient
+       r="320"
+       fy="-200"
+       fx="320"
+       cy="-200"
+       cx="320"
+       gradientTransform="translate(680,372.3622)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3942"
+       xlink:href="#linearGradient3851-7-5"
+       inkscape:collect="always" />
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -24,9 +148,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="100.31767"
-     inkscape:cy="-206.3918"
+     inkscape:zoom="0.5"
+     inkscape:cx="504"
+     inkscape:cy="497"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -101,7 +225,7 @@
          style="fill:#000000;fill-opacity:1;stroke:none" />
     </g>
     <g
-       transform="translate(715.26406,2.0562648)"
+       transform="translate(722,-2)"
        id="g3778-1"
        style="stroke:#ffffff">
       <rect
@@ -605,5 +729,46 @@
            transform="translate(0,732.36218)" />
       </g>
     </g>
+    <rect
+       style="fill:url(#radialGradient3857);fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="TorchLight"
+       width="640"
+       height="320"
+       x="0"
+       y="-360"
+       transform="translate(0,732.36218)"
+       inkscape:label="#rect3081"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient3874);fill-opacity:1;stroke:none"
+       id="LanternLight"
+       width="640"
+       height="320"
+       x="680"
+       y="372.36218"
+       inkscape:label="#rect3081"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient3908);fill-opacity:1;stroke:none"
+       id="MatchLight"
+       width="640"
+       height="320"
+       x="-680"
+       y="372.36218"
+       inkscape:label="#rect3081"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient3942);fill-opacity:1;stroke:none"
+       id="MagicLanternLight"
+       width="640"
+       height="320"
+       x="680"
+       y="12.36218"
+       inkscape:label="#rect3081"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>

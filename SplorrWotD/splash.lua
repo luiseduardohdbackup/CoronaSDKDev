@@ -4,7 +4,7 @@ local scene = storyboard.newScene()
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
     local group = self.view
-	display.newRect(group,0,0,640,480):setFillColor(0,0,0)
+	display.newImage(group,"Background.png")
 	local logo = display.newImage(group,"pdglogo.png")
 	logo.x = display.contentCenterX
 	logo.y = display.contentCenterY

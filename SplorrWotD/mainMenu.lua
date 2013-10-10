@@ -1,29 +1,32 @@
 local storyboard = require( "storyboard" )
 local scene = storyboard.newScene()
 
-function adListener(event)
-	if event.isError then
-	end
-end
-local ads = require("ads")
-ads.init("admob","ca-app-pub-6417425738244044/6541055152",adListener)
-
-
 function scene:createScene( event )
         local group = self.view
 	self.gameData = event.params
-	display.newRect(group,0,0,640,480):setFillColor(0,0,0)
+	display.newImage(group,"Background.png")
 
-		display.newText({
+	display.newText({
 		parent = group,
 		text="Splorr!!",
 		x=display.contentCenterX,
-		y=display.contentCenterY,
+		y=display.contentCenterY - 48,
 		width=640,
 		font="8bitoperator JVE",
-		fontSize=128,
+		fontSize=96,
 		align="center"
 	}):setTextColor(255,255,255)
+
+	display.newText({
+		parent = group,
+		text="Wrath of the Dagger",
+		x=display.contentCenterX,
+		y=display.contentCenterY + 32,
+		width=640,
+		font="8bitoperator JVE",
+		fontSize=32,
+		align="center"
+	}):setTextColor(128,128,128)
 
 	
 	self.playButton = display.newImage(group,"longbutton.png")
@@ -40,15 +43,15 @@ function scene:createScene( event )
 		align="center"
 	}):setTextColor(255,255,255)
 
-	self.statsButton = display.newImage(group,"longbutton.png")
-	self.statsButton.x = self.gameData.bounds.right - self.statsButton.width
-	self.statsButton.y = self.gameData.bounds.bottom - self.statsButton.height
-	self.statsButton:addEventListener("tap",self)
+	self.optionsButton = display.newImage(group,"longbutton.png")
+	self.optionsButton.x = self.gameData.bounds.right - self.optionsButton.width
+	self.optionsButton.y = self.gameData.bounds.bottom - self.optionsButton.height
+	self.optionsButton:addEventListener("tap",self)
 	display.newText({
 		parent = group,
-		text="Stats",
-		x=self.statsButton.x,
-		y=self.statsButton.y,
+		text="Options",
+		x=self.optionsButton.x,
+		y=self.optionsButton.y,
 		font="8bitoperator JVE",
 		fontSize=48,
 		align="center"
@@ -85,24 +88,23 @@ end
 
 function scene:tap(event)
 	if event.target==self.playButton then
-		ads.hide()
 		storyboard.gotoScene("play","crossFade")
 	elseif event.target==self.helpButton then
-		ads.hide()
-		storyboard.gotoScene("help","slideRight")
-	elseif event.target==self.statsButton then
-		ads.hide()
-		storyboard.gotoScene("stats","slideUp")
+		native.showWebPopup(0,0,640,360,"help.txt",{
+			baseUrl = system.ResourceDirectory
+		})
+	elseif event.target==self.optionsButton then
+		storyboard.gotoScene("options","slideUp")
 	elseif event.target==self.aboutButton then
-		ads.hide()
-		storyboard.gotoScene("about","slideLeft")
+		native.showWebPopup(0,0,640,360,"about.txt",{
+			baseUrl = system.ResourceDirectory
+		})
 	end
 end
 
 -- Called BEFORE scene has moved onscreen:
 function scene:willEnterScene( event )
         local group = self.view
-		ads.show("banner",{ x = 0, y = 0})
 
         -----------------------------------------------------------------------------
 

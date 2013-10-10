@@ -2,12 +2,12 @@
 require "sqlite3"
 local ads = require("ads")
 
-local db = sqlite3.open(system.pathForFile("JL2013.db",system.DocumentsDirectory))
-
 function adListener(event)
 	if event.isError then
 	end
 end
+
+local db = sqlite3.open(system.pathForFile("JL2013.db",system.DocumentsDirectory))
 
 function handleSystem(event)
 	if event.type=="applicationExit" then

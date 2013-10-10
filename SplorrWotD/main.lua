@@ -1,13 +1,11 @@
 --main.lua
-display.setDefault("background",128,128,128)
+display.setDefault("background",0,0,0)
 local gameData = {}
-gameData.highScores = require("highscores")
-print(gameData.highScores:getAllTimeHighScore())
 gameData.bounds = {
 	left = 0,
 	right = 640,
 	top = 0,
-	bottom = 480
+	bottom = 360
 }
 local storyboard = require("storyboard")
 storyboard.loadScene("splash",false,gameData)

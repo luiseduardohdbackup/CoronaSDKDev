@@ -16,19 +16,19 @@ function scene:createScene( event )
 
 		display.newText({
 		parent = group,
-		text="JetLag 2013",
+		text="Splorr!!",
 		x=display.contentCenterX,
 		y=display.contentCenterY,
 		width=640,
 		font="8bitoperator JVE",
 		fontSize=128,
 		align="center"
-	}):setTextColor(0,255,0)
+	}):setTextColor(255,255,255)
 
 	
 	self.playButton = display.newImage(group,"longbutton.png")
 	self.playButton.x = self.gameData.bounds.left + self.playButton.width
-	self.playButton.y = self.gameData.bounds.bottom - self.playButton.height * 2
+	self.playButton.y = self.gameData.bounds.bottom - self.playButton.height
 	self.playButton:addEventListener("tap",self)
 	display.newText({
 		parent = group,
@@ -42,7 +42,7 @@ function scene:createScene( event )
 
 	self.statsButton = display.newImage(group,"longbutton.png")
 	self.statsButton.x = self.gameData.bounds.right - self.statsButton.width
-	self.statsButton.y = self.gameData.bounds.bottom - self.statsButton.height * 2
+	self.statsButton.y = self.gameData.bounds.bottom - self.statsButton.height
 	self.statsButton:addEventListener("tap",self)
 	display.newText({
 		parent = group,
@@ -56,7 +56,7 @@ function scene:createScene( event )
 
 	self.helpButton = display.newImage(group,"longbutton.png")
 	self.helpButton.x = self.gameData.bounds.left + self.helpButton.width
-	self.helpButton.y = self.gameData.bounds.top + self.helpButton.height * 2
+	self.helpButton.y = self.gameData.bounds.top + self.helpButton.height
 	self.helpButton:addEventListener("tap",self)
 	display.newText({
 		parent = group,
@@ -70,7 +70,7 @@ function scene:createScene( event )
 
 	self.aboutButton = display.newImage(group,"longbutton.png")
 	self.aboutButton.x = self.gameData.bounds.right - self.aboutButton.width
-	self.aboutButton.y = self.gameData.bounds.top + self.aboutButton.height * 2
+	self.aboutButton.y = self.gameData.bounds.top + self.aboutButton.height
 	self.aboutButton:addEventListener("tap",self)
 	display.newText({
 		parent = group,

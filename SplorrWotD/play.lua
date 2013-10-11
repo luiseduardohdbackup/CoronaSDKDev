@@ -40,7 +40,12 @@ function scene:createScene( event )
 	self.roomDoorUp.y = 40
 	self.roomDoorUp.isVisible = false
 	
-	self.torchLight = display.newImage(group,"LanternLight.png")
+	self.spider = display.newImage(group,"Spider.png")
+	self.spider.x = 320
+	self.spider.y = 240
+	self.spider.isVisible = false
+	
+	self.torchLight = display.newImage(group,"TorchLight.png")
 	self.torchLight.x = 320
 	self.torchLight.y = 160
 	

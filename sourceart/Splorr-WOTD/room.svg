@@ -148,9 +148,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
-     inkscape:cx="504"
-     inkscape:cy="497"
+     inkscape:zoom="1"
+     inkscape:cx="-84.381416"
+     inkscape:cy="-168.89557"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -373,7 +373,7 @@
        inkscape:export-filename="C:\Users\epazera\Documents\GitHub\CoronaSDKDev\sourceart\Splorr-WOTD\Background.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(-200,-108)">
+       transform="translate(202,-112)">
       <g
          id="g3778-2"
          transform="translate(-120,630)">
@@ -770,5 +770,60 @@
        inkscape:label="#rect3081"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
+    <g
+       id="g3951"
+       inkscape:export-filename="C:\Users\epazera\Documents\GitHub\CoronaSDKDev\sourceart\Splorr-WOTD\turn-background.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         transform="translate(0,732.36218)"
+         y="0"
+         x="-680"
+         height="320"
+         width="640"
+         id="rect3151"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         transform="translate(0,732.36218)"
+         inkscape:connector-curvature="0"
+         id="path3153"
+         d="m -680,40 640,0"
+         style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+      <path
+         transform="translate(0,732.36218)"
+         inkscape:connector-curvature="0"
+         id="path3155"
+         d="m -680,280 640,0"
+         style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+    </g>
+    <g
+       id="g3956"
+       inkscape:export-filename="C:\Users\epazera\Documents\GitHub\CoronaSDKDev\sourceart\Splorr-WOTD\turnforeground.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         y="1092.3622"
+         x="-680"
+         height="320"
+         width="640"
+         id="rect3151-2"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3153-4"
+         d="m -680,1132.3622 640,0"
+         style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3155-5"
+         d="m -680,1372.3622 640,0"
+         style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         transform="translate(0,732.36218)"
+         inkscape:connector-curvature="0"
+         id="path3949"
+         d="m -360,400 0,240"
+         style="fill:none;stroke:#ffffff;stroke-width:4.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+    </g>
   </g>
 </svg>

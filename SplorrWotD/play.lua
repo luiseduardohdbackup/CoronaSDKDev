@@ -45,6 +45,16 @@ function scene:createScene( event )
 	self.spider.y = 240
 	self.spider.isVisible = false
 	
+	self.turnBackground = display.newImage(group,"TurnBackground.png")
+	self.turnBackground.x = 320
+	self.turnBackground.y = 160
+	self.turnBackground.isVisible = false
+	
+	self.turnForeground = display.newImage(group,"TurnForeground.png")
+	self.turnForeground.x = 320
+	self.turnForeground.y = 160
+	self.turnForeground.isVisible = false
+	
 	self.torchLight = display.newImage(group,"TorchLight.png")
 	self.torchLight.x = 320
 	self.torchLight.y = 160
@@ -72,6 +82,34 @@ function scene:createScene( event )
 	
 end
 
+function scene:timer(event)
+	if event.source==self.turnLeftTimer then
+		self.turnForeground.x = self.turnForeground.x + 40
+		if self.turnForeground.x > 640 then
+			self.turnForeground.isVisible = false
+			self.turnBackground.isVisible = false
+			timer.cancel(self.turnLeftTimer)
+			self.turnLeftTimer = nil
+		end
+	elseif event.source==self.turnRightTimer then
+		self.turnForeground.x = self.turnForeground.x - 40
+		if self.turnForeground.x < 0 then
+			self.turnForeground.isVisible = false
+			self.turnBackground.isVisible = false
+			timer.cancel(self.turnRightTimer)
+			self.turnRightTimer = nil
+		end
+	elseif event.source==self.turnAroundTimer then
+		self.turnForeground.x = self.turnForeground.x - 40
+		if self.turnForeground.x < 0 then
+			timer.cancel(self.turnAroundTimer)
+			self.turnAroundTimer = nil
+			self.turnForeground.x = 640
+			self.turnRightTimer = timer.performWithDelay(25,self,0)
+		end
+	end
+end
+
 function scene:tap(event)
 	if event.target == self.moveForwardButton then
 		local thePlayer = self.gameData.maze.player
@@ -82,14 +120,32 @@ function scene:tap(event)
 			self:renderCurrentRoom()
 		end
 	elseif event.target == self.turnLeftButton then
-		self.gameData.maze.player.direction = directions.lefts[self.gameData.maze.player.direction]
-		self:renderCurrentRoom()
+		if self.turnLeftTimer == nil then
+			self.turnBackground.isVisible = true
+			self.turnForeground.x = 0
+			self.turnForeground.isVisible = true
+			self.turnLeftTimer = timer.performWithDelay(25,self,0)
+			self.gameData.maze.player.direction = directions.lefts[self.gameData.maze.player.direction]
+			self:renderCurrentRoom()
+		end
 	elseif event.target == self.turnRightButton then
-		self.gameData.maze.player.direction = directions.rights[self.gameData.maze.player.direction]
-		self:renderCurrentRoom()
+		if self.turnRightTimer == nil then
+			self.turnBackground.isVisible = true
+			self.turnForeground.x = 640
+			self.turnForeground.isVisible = true
+			self.turnRightTimer = timer.performWithDelay(25,self,0)
+			self.gameData.maze.player.direction = directions.rights[self.gameData.maze.player.direction]
+			self:renderCurrentRoom()
+		end
 	elseif event.target == self.turnAroundButton then
-		self.gameData.maze.player.direction = directions.opposites[self.gameData.maze.player.direction]
-		self:renderCurrentRoom()
+		if self.turnAroundTimer == nil then
+			self.turnBackground.isVisible = true
+			self.turnForeground.x = 640
+			self.turnForeground.isVisible = true
+			self.turnAroundTimer = timer.performWithDelay(25,self,0)
+			self.gameData.maze.player.direction = directions.opposites[self.gameData.maze.player.direction]
+			self:renderCurrentRoom()
+		end
 	end
 end
 

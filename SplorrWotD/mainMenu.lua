@@ -90,7 +90,7 @@ function scene:tap(event)
 	if event.target==self.playButton then
 		storyboard.gotoScene("play","crossFade")
 	elseif event.target==self.helpButton then
-		native.showWebPopup(0,0,640,360,"help.txt",{
+		native.showWebPopup(0,0,640,360,"help.html",{
 			baseUrl = system.ResourceDirectory
 		})
 	elseif event.target==self.optionsButton then

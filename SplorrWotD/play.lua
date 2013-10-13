@@ -55,6 +55,16 @@ function scene:createScene( event )
 	self.turnForeground.y = 160
 	self.turnForeground.isVisible = false
 	
+	self.stepDoor = display.newImage(group,"StepDoor.png")
+	self.stepDoor.x = 320
+	self.stepDoor.y = 160
+	self.stepDoor.isVisible = false
+	
+	self.stepWall = display.newImage(group,"StepWall.png")
+	self.stepWall.x = 320
+	self.stepWall.y = 160
+	self.stepWall.isVisible = false
+	
 	self.torchLight = display.newImage(group,"TorchLight.png")
 	self.torchLight.x = 320
 	self.torchLight.y = 160
@@ -107,6 +117,10 @@ function scene:timer(event)
 			self.turnForeground.x = 640
 			self.turnRightTimer = timer.performWithDelay(25,self,0)
 		end
+	elseif event.source == self.stepTimer then
+		self.stepTimer = nil
+		self.stepDoor.isVisible=false
+		self.stepWall.isVisible=false
 	end
 end
 
@@ -115,9 +129,14 @@ function scene:tap(event)
 		local thePlayer = self.gameData.maze.player
 		local theRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
 		if theRoom.connections[thePlayer.direction] then
+			self.stepDoor.isVisible=true
+			self.stepTimer = timer.performWithDelay(500,self)
 			thePlayer.position.column = thePlayer.position.column + directions.deltas[thePlayer.direction].x
 			thePlayer.position.row = thePlayer.position.row + directions.deltas[thePlayer.direction].y
 			self:renderCurrentRoom()
+		else
+			self.stepWall.isVisible=true
+			self.stepTimer = timer.performWithDelay(500,self)
 		end
 	elseif event.target == self.turnLeftButton then
 		if self.turnLeftTimer == nil then

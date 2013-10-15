@@ -6,7 +6,7 @@ local constants = {
 }
 
 local happySpeed = 10
-local happySpeedMultiplier = 1.05
+local happySpeedMultiplier = 1.2
 local sadSpeed = 5
 local minimum = 5
 local banana
@@ -55,7 +55,7 @@ function spawnSadMonkey()
 		theSadMonkey.x = display.contentCenterX+display.viewableContentWidth/2
 		theSadMonkey.y = display.contentCenterY-display.viewableContentHeight/2 + math.random() * display.viewableContentHeight
 	end
-	local angle = math.random() * math.pi
+	local angle = math.atan2(display.contentCenterY-theSadMonkey.y,display.contentCenterX-theSadMonkey.x+(math.random()*display.viewableContentWidth/2)-display.viewableContentWidth/4)
 	theSadMonkey.deltaX = math.cos(angle) * sadSpeed
 	theSadMonkey.deltaY = math.sin(angle) * sadSpeed
 end

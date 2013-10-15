@@ -3,7 +3,10 @@ local directions = require("directions")
 theMaze.newMaze = function(theColumns,theRows)
 	local theResult = {}
 	theResult.version = 1
-	theResult.player = {direction=math.random(directions.count)}
+	theResult.player = {
+		direction=math.random(directions.count),
+		light = 1
+	}
 	theResult.columns = {}
 	while #theResult.columns<theColumns do
 		local theColumn = {}
@@ -18,7 +21,7 @@ theMaze.newMaze = function(theColumns,theRows)
 			theCell.connections = {}
 			theCell.connectionCount = 0
 			while #theCell.connections < directions.count do
-				table.insert(theCell.connections,false)
+				table.insert(theCell.connections,0)
 			end
 		end
 	end
@@ -53,9 +56,9 @@ theMaze.newMaze = function(theColumns,theRows)
 		end
 		local direction = possibleDirections[math.random(#possibleDirections)]
 		cell.inside = true
-		cell.connections[direction]=true
+		cell.connections[direction]=1
 		cell.connectionCount = cell.connectionCount + 1
-		cell.neighbors[direction].connections[directions.opposites[direction]]=true
+		cell.neighbors[direction].connections[directions.opposites[direction]]=1
 		cell.neighbors[direction].connectionCount = cell.neighbors[direction].connectionCount + 1
 		for direction=1,#cell.neighbors do
 			if cell.neighbors[direction] ~= nil and not cell.neighbors[direction].inside and table.indexOf(frontier,cell.neighbors[direction])==nil then
@@ -71,6 +74,18 @@ theMaze.newMaze = function(theColumns,theRows)
 			done = true
 			theResult.exit = {column=theColumn,row=theRow}
 			theResult.player.position = {column=theColumn,row=theRow}
+		end
+	end
+	for theColumn = 1, theColumns do
+		for theRow = 1, theRows do
+			local theCell = theResult.columns[theColumn][theRow]
+			for theDirection = 1, directions.count do
+				if theCell.connections[theDirection]>0 then
+					if theCell.connectionCount==1 or theCell.neighbors[theDirection].connectionCount==1 then
+						theCell.connections[theDirection]=2
+					end
+				end
+			end
 		end
 	end
 	for theColumn = 1, theColumns do

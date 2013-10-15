@@ -5,10 +5,30 @@ local directions = require("directions")
 function scene:renderCurrentRoom()
 	local thePlayer = self.gameData.maze.player
 	local theRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
-	self.roomDoorAhead.isVisible = theRoom.connections[thePlayer.direction]
-	self.roomDoorLeft.isVisible = theRoom.connections[directions.lefts[thePlayer.direction]]
-	self.roomDoorRight.isVisible = theRoom.connections[directions.rights[thePlayer.direction]]
-	self.roomDoorUp.isVisible = thePlayer.position.column == self.gameData.maze.exit.column and thePlayer.position.row == self.gameData.maze.exit.row
+	local door = self.doorLightTable[thePlayer.light][theRoom.connections[thePlayer.direction]]
+	for theDoor = 1, 3 do
+		self.doorAhead[theDoor].isVisible = (door==theDoor)
+	end
+	door = self.doorLightTable[thePlayer.light][theRoom.connections[directions.lefts[thePlayer.direction]]]
+	for theDoor = 1, 3 do
+		self.doorLeft[theDoor].isVisible = (door==theDoor)
+	end
+	door = self.doorLightTable[thePlayer.light][theRoom.connections[directions.rights[thePlayer.direction]]]
+	for theDoor = 1, 3 do
+		self.doorRight[theDoor].isVisible = (door==theDoor)
+	end
+	self.doorUp.isVisible = thePlayer.position.column == self.gameData.maze.exit.column and thePlayer.position.row == self.gameData.maze.exit.row
+	for light=1,4 do
+		if light==thePlayer.light then
+			if not self.light[light].isVisible then
+				self.light[light].isVisible = true
+			end
+		else
+			if self.light[light].isVisible then
+				self.light[light].isVisible = false
+			end
+		end
+	end
 end
 
 -- Called when the scene's view does not exist:
@@ -20,25 +40,65 @@ function scene:createScene( event )
 	self.roomWalls.x = 320
 	self.roomWalls.y = 160
 	
-	self.roomDoorAhead = display.newImage(group,"RoomDoorAhead.png")
-	self.roomDoorAhead.x = 320
-	self.roomDoorAhead.y = 160
-	self.roomDoorAhead.isVisible = false
-
-	self.roomDoorLeft = display.newImage(group,"RoomDoorLeft.png")
-	self.roomDoorLeft.x = 80
-	self.roomDoorLeft.y = 160
-	self.roomDoorLeft.isVisible = false
-
-	self.roomDoorRight = display.newImage(group,"RoomDoorRight.png")
-	self.roomDoorRight.x = 560
-	self.roomDoorRight.y = 160
-	self.roomDoorRight.isVisible = false
-
-	self.roomDoorUp = display.newImage(group,"RoomDoorUp.png")
-	self.roomDoorUp.x = 320
-	self.roomDoorUp.y = 40
-	self.roomDoorUp.isVisible = false
+	self.doorLightTable = {
+		{1,0},
+		{1,0},
+		{1,2},
+		{1,3}
+	}
+	
+	self.doorAhead = {}
+	self.doorAhead[1] = display.newImage(group,"Doors/ahead/Door.png")
+	self.doorAhead[1].x = 320
+	self.doorAhead[1].y = 160
+	self.doorAhead[1].isVisible = false
+	
+	self.doorAhead[2] = display.newImage(group,"Doors/ahead/SecretSemi.png")
+	self.doorAhead[2].x = 320
+	self.doorAhead[2].y = 160
+	self.doorAhead[2].isVisible = false
+	
+	self.doorAhead[3] = display.newImage(group,"Doors/ahead/SecretFull.png")
+	self.doorAhead[3].x = 320
+	self.doorAhead[3].y = 160
+	self.doorAhead[3].isVisible = false
+	
+	self.doorLeft = {}
+	self.doorLeft[1] = display.newImage(group,"Doors/left/Door.png")
+	self.doorLeft[1].x = 80
+	self.doorLeft[1].y = 160
+	self.doorLeft[1].isVisible = false
+	
+	self.doorLeft[2] = display.newImage(group,"Doors/left/SecretSemi.png")
+	self.doorLeft[2].x = 80
+	self.doorLeft[2].y = 160
+	self.doorLeft[2].isVisible = false
+	
+	self.doorLeft[3] = display.newImage(group,"Doors/left/SecretFull.png")
+	self.doorLeft[3].x = 80
+	self.doorLeft[3].y = 160
+	self.doorLeft[3].isVisible = false
+	
+	self.doorRight = {}
+	self.doorRight[1] = display.newImage(group,"Doors/right/Door.png")
+	self.doorRight[1].x = 560
+	self.doorRight[1].y = 160
+	self.doorRight[1].isVisible = false
+	
+	self.doorRight[2] = display.newImage(group,"Doors/right/SecretSemi.png")
+	self.doorRight[2].x = 560
+	self.doorRight[2].y = 160
+	self.doorRight[2].isVisible = false
+	
+	self.doorRight[3] = display.newImage(group,"Doors/right/SecretFull.png")
+	self.doorRight[3].x = 560
+	self.doorRight[3].y = 160
+	self.doorRight[3].isVisible = false
+	
+	self.doorUp = display.newImage(group,"Doors/up/Door.png")
+	self.doorUp.x = 320
+	self.doorUp.y = 40
+	self.doorUp.isVisible = false
 	
 	self.spider = display.newImage(group,"Spider.png")
 	self.spider.x = 320
@@ -65,9 +125,31 @@ function scene:createScene( event )
 	self.stepWall.y = 160
 	self.stepWall.isVisible = false
 	
-	self.torchLight = display.newImage(group,"TorchLight.png")
-	self.torchLight.x = 320
-	self.torchLight.y = 160
+	self.light = {}
+	
+	self.light[1] = display.newImage(group,"Lights/Match.png")
+	self.light[1].x = 320
+	self.light[1].y = 160
+	self.light[1].isVisible=false
+	
+	self.light[2] = display.newImage(group,"Lights/Torch.png")
+	self.light[2].x = 320
+	self.light[2].y = 160
+	self.light[2].isVisible=false
+	
+	self.light[3] = display.newImage(group,"Lights/Lantern.png")
+	self.light[3].x = 320
+	self.light[3].y = 160
+	self.light[3].isVisible=false
+	
+	self.light[4] = display.newImage(group,"Lights/MagicLantern.png")
+	self.light[4].x = 320
+	self.light[4].y = 160
+	self.light[4].isVisible=false
+	
+	self.hitRect = display.newRect(group,0,0,640,320)
+	self.hitRect:setFillColor(128,0,0)
+	self.hitRect.alpha = 0
 	
 	self.moveForwardButton = display.newImage(group,"MoveForward.png")
 	self.moveForwardButton.x = 300
@@ -88,6 +170,11 @@ function scene:createScene( event )
 	self.turnAroundButton.x = 340
 	self.turnAroundButton.y = 340
 	self.turnAroundButton:addEventListener("tap",self)
+
+	self.lightButton = display.newImage(group,"LightLevel.png")
+	self.lightButton.x = 420
+	self.lightButton.y = 340
+	self.lightButton:addEventListener("tap",self)
 
 	
 end
@@ -128,7 +215,7 @@ function scene:tap(event)
 	if event.target == self.moveForwardButton then
 		local thePlayer = self.gameData.maze.player
 		local theRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
-		if theRoom.connections[thePlayer.direction] then
+		if theRoom.connections[thePlayer.direction]~=0 then
 			self.stepDoor.isVisible=true
 			self.stepTimer = timer.performWithDelay(500,self)
 			thePlayer.position.column = thePlayer.position.column + directions.deltas[thePlayer.direction].x
@@ -165,6 +252,12 @@ function scene:tap(event)
 			self.gameData.maze.player.direction = directions.opposites[self.gameData.maze.player.direction]
 			self:renderCurrentRoom()
 		end
+	elseif event.target == self.lightButton then
+		self.gameData.maze.player.light = self.gameData.maze.player.light + 1
+		if self.gameData.maze.player.light>4 then
+			self.gameData.maze.player.light = 1
+		end
+		self:renderCurrentRoom()
 	end
 end
 

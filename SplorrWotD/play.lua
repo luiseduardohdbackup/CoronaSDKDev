@@ -41,10 +41,10 @@ function scene:createScene( event )
 	self.roomWalls.y = 160
 	
 	self.doorLightTable = {
-		{1,0},
-		{1,0},
-		{1,2},
-		{1,3}
+		{[0]=0,1,0},
+		{[0]=0,1,0},
+		{[0]=0,1,2},
+		{[0]=0,1,3}
 	}
 	
 	self.doorAhead = {}
@@ -115,15 +115,27 @@ function scene:createScene( event )
 	self.turnForeground.y = 160
 	self.turnForeground.isVisible = false
 	
-	self.stepDoor = display.newImage(group,"StepDoor.png")
-	self.stepDoor.x = 320
-	self.stepDoor.y = 160
-	self.stepDoor.isVisible = false
+	self.step = {}
 	
-	self.stepWall = display.newImage(group,"StepWall.png")
-	self.stepWall.x = 320
-	self.stepWall.y = 160
-	self.stepWall.isVisible = false
+	self.step[0] = display.newImage(group,"Doors/step/Wall.png")
+	self.step[0].x = 320
+	self.step[0].y = 160
+	self.step[0].isVisible = false
+	
+	self.step[1] = display.newImage(group,"Doors/step/Door.png")
+	self.step[1].x = 320
+	self.step[1].y = 160
+	self.step[1].isVisible = false
+	
+	self.step[2] = display.newImage(group,"Doors/step/SecretSemi.png")
+	self.step[2].x = 320
+	self.step[2].y = 160
+	self.step[2].isVisible = false
+	
+	self.step[3] = display.newImage(group,"Doors/step/SecretFull.png")
+	self.step[3].x = 320
+	self.step[3].y = 160
+	self.step[3].isVisible = false
 	
 	self.light = {}
 	
@@ -206,8 +218,9 @@ function scene:timer(event)
 		end
 	elseif event.source == self.stepTimer then
 		self.stepTimer = nil
-		self.stepDoor.isVisible=false
-		self.stepWall.isVisible=false
+		for theImage=0,3 do
+			self.step[theImage].isVisible=false
+		end
 	end
 end
 
@@ -215,15 +228,15 @@ function scene:tap(event)
 	if event.target == self.moveForwardButton then
 		local thePlayer = self.gameData.maze.player
 		local theRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
+		self.step[self.doorLightTable[thePlayer.light][theRoom.connections[thePlayer.direction]]].isVisible=true	
+		self.stepTimer = timer.performWithDelay(500,self)
 		if theRoom.connections[thePlayer.direction]~=0 then
-			self.stepDoor.isVisible=true
-			self.stepTimer = timer.performWithDelay(500,self)
 			thePlayer.position.column = thePlayer.position.column + directions.deltas[thePlayer.direction].x
 			thePlayer.position.row = thePlayer.position.row + directions.deltas[thePlayer.direction].y
 			self:renderCurrentRoom()
 		else
-			self.stepWall.isVisible=true
-			self.stepTimer = timer.performWithDelay(500,self)
+			self.hitRect.alpha=1
+			transition.to(self.hitRect,{alpha=0})
 		end
 	elseif event.target == self.turnLeftButton then
 		if self.turnLeftTimer == nil then

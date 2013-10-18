@@ -100,10 +100,15 @@ function scene:createScene( event )
 	self.doorUp.y = 40
 	self.doorUp.isVisible = false
 	
-	self.spider = display.newImage(group,"Spider.png")
+	self.spider = display.newImage(group,"Monsters/Spider.png")
 	self.spider.x = 320
-	self.spider.y = 240
-	self.spider.isVisible = false
+	self.spider.y = 160
+	self.spider.isVisible = true
+	
+	self.spider = display.newImage(group,"Monsters/SpiderHit.png")
+	self.spider.x = 320
+	self.spider.y = 160
+	self.spider.isVisible = true
 	
 	self.turnBackground = display.newImage(group,"TurnBackground.png")
 	self.turnBackground.x = 320

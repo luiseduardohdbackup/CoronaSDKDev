@@ -7,10 +7,14 @@ function scene:createScene( event )
     local group = self.view
 	self.gameData = event.params
 	self.mapSheet = graphics.newImageSheet("Map/Rooms.png",{width=40,height=40,numFrames=16})
+	self.doorSheet = graphics.newImageSheet("Map/SecretDoors.png",{width=40,height=40,numFrames=16})
+	self.playerSheet = graphics.newImageSheet("Map/Player.png",{width=40,height=40,numFrames=4})
 	local maze = self.gameData.maze
 	self.roomSprites = {}
+	self.doorSprites = {}
 	for column = 1 , maze.size.columns do
 		table.insert(self.roomSprites,{})
+		table.insert(self.doorSprites,{})
 		for row = 1 , maze.size.rows do
 			table.insert(self.roomSprites[column],display.newSprite(group,self.mapSheet,{
 				name = "room",
@@ -21,8 +25,18 @@ function scene:createScene( event )
 			self.roomSprites[column][row].y = 40 * row - 20
 			self.roomSprites[column][row]:setSequence("room")
 			self.roomSprites[column][row]:setFrame(16)
+			table.insert(self.doorSprites[column],display.newSprite(group,self.doorSheet,{
+				name = "door",
+				start = 1,
+				count = 16
+			}))
+			self.doorSprites[column][row].x = 40 * column - 20
+			self.doorSprites[column][row].y = 40 * row - 20
+			self.doorSprites[column][row]:setSequence("door")
+			self.doorSprites[column][row]:setFrame(16)
 		end
 	end
+	self.playerSprite = display.newSprite(group,self.playerSheet,{name="player",start=1,count=4})
 	self.testButton = display.newImage(group,"EmptyButton.png")
 	self.testButton.x = 220
 	self.testButton.y = 340
@@ -31,28 +45,41 @@ end
 
 function scene:renderMap()
 	local maze = self.gameData.maze
+	local player = self.gameData.maze.player
 	for column = 1 , maze.size.columns do
 		for row = 1 , maze.size.rows do
 			local cell = maze.columns[column][row]
-			local sprite = self.roomSprites[column][row]
+			local roomSprite = self.roomSprites[column][row]
+			local doorSprite = self.doorSprites[column][row]
+			if column==player.position.column and row==player.position.row then
+				self.playerSprite.x = roomSprite.x
+				self.playerSprite.y = roomSprite.y
+				self.playerSprite:setFrame(player.direction)
+			end
 			if cell.visitCount~=nil then
-				local frame = 1
-				if cell.connections[1]==1 then
-					frame = frame + 1
+				local roomFrame = 1
+				local doorFrame = 1
+				for direction=1,directions.count do
+					if cell.connections[direction]==1 then
+						roomFrame = roomFrame + directions.flags[direction]
+					elseif cell.connections[direction]==2 then
+						local nextColumn = column + directions.deltas[direction].x
+						local nextRow = row + directions.deltas[direction].y
+						if nextColumn>=1 and nextRow>=1 and nextColumn<=maze.size.columns and nextRow<=maze.size.rows then
+							local nextCell = maze.columns[nextColumn][nextRow]
+							if nextCell.visitCount ~= nil then
+								doorFrame = doorFrame + directions.flags[direction]
+							end
+						end
+					end
 				end
-				if cell.connections[2]==1 then
-					frame = frame + 2
-				end
-				if cell.connections[3]==1 then
-					frame = frame + 4
-				end
-				if cell.connections[4]==1 then
-					frame = frame + 8
-				end
-				sprite:setFrame(frame)
-				sprite.isVisible = true
+				doorSprite:setFrame(doorFrame)
+				roomSprite:setFrame(roomFrame)
+				doorSprite.isVisible = true
+				roomSprite.isVisible = true
 			else
-				sprite.isVisible = false
+				roomSprite.isVisible = false
+				doorSprite.isVisible = false
 			end
 		end
 	end

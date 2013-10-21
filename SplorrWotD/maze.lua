@@ -7,6 +7,10 @@ theMaze.newMaze = function(theColumns,theRows)
 		direction=math.random(directions.count),
 		light = 1
 	}
+	theResult.size = {
+		columns = theColumns,
+		rows = theRows
+	}
 	theResult.columns = {}
 	while #theResult.columns<theColumns do
 		local theColumn = {}
@@ -74,6 +78,7 @@ theMaze.newMaze = function(theColumns,theRows)
 			done = true
 			theResult.exit = {column=theColumn,row=theRow}
 			theResult.player.position = {column=theColumn,row=theRow}
+			theResult.columns[theColumn][theRow].visitCount = 1
 		end
 	end
 	for theColumn = 1, theColumns do

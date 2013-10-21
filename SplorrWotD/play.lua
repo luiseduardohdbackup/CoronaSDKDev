@@ -100,15 +100,20 @@ function scene:createScene( event )
 	self.doorUp.y = 40
 	self.doorUp.isVisible = false
 	
-	self.spider = display.newImage(group,"Monsters/Spider.png")
-	self.spider.x = 320
-	self.spider.y = 160
-	self.spider.isVisible = true
+	self.bat = display.newImage(group,"Monsters/Bat.png")
+	self.bat.x = 320
+	self.bat.y = 160
+	self.bat.isVisible = true
 	
-	self.spider = display.newImage(group,"Monsters/SpiderHit.png")
-	self.spider.x = 320
-	self.spider.y = 160
-	self.spider.isVisible = true
+	self.batHit = display.newImage(group,"Monsters/BatHit.png")
+	self.batHit.x = 320
+	self.batHit.y = 160
+	self.batHit.isVisible = false
+	
+	self.batLunge = display.newImage(group,"Monsters/BatLunge.png")
+	self.batLunge.x = 320
+	self.batLunge.y = 160
+	self.batLunge.isVisible = false
 	
 	self.turnBackground = display.newImage(group,"TurnBackground.png")
 	self.turnBackground.x = 320
@@ -193,6 +198,11 @@ function scene:createScene( event )
 	self.lightButton.y = 340
 	self.lightButton:addEventListener("tap",self)
 
+	self.testButton = display.newImage(group,"EmptyButton.png")
+	self.testButton.x = 220
+	self.testButton.y = 340
+	self.testButton:addEventListener("tap",self)
+
 	
 end
 
@@ -226,6 +236,14 @@ function scene:timer(event)
 		for theImage=0,3 do
 			self.step[theImage].isVisible=false
 		end
+	elseif event.source == self.lungeTimer then
+		self.lungeTimer = nil
+		self.bat.isVisible = true
+		self.batLunge.isVisible=false
+	elseif event.source == self.playerHitTimer then
+		self.hitRect.alpha = 1.0
+		transition.to(self.hitRect,{alpha=0})
+		self.playerHitTimer = nil
 	end
 end
 
@@ -238,6 +256,12 @@ function scene:tap(event)
 		if theRoom.connections[thePlayer.direction]~=0 then
 			thePlayer.position.column = thePlayer.position.column + directions.deltas[thePlayer.direction].x
 			thePlayer.position.row = thePlayer.position.row + directions.deltas[thePlayer.direction].y
+			local theNextRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
+			if theNextRoom.visitCount==nil then
+				theNextRoom.visitCount = 1
+			else
+				theNextRoom.visitCount = theNextRoom.visitCount + 1
+			end
 			self:renderCurrentRoom()
 		else
 			self.hitRect.alpha=1
@@ -276,6 +300,16 @@ function scene:tap(event)
 			self.gameData.maze.player.light = 1
 		end
 		self:renderCurrentRoom()
+	elseif event.target == self.testButton then
+		storyboard.gotoScene("map")
+		--if self.lungeTimer==nil then
+			--self.lungeTimer = timer.performWithDelay(500,self)
+			--self.bat.isVisible = false
+			--self.batLunge.isVisible = true
+		--end
+		--if self.playerHitTimer == nil then
+			--self.playerHitTimer = timer.performWithDelay(250,self)
+		--end
 	end
 end
 

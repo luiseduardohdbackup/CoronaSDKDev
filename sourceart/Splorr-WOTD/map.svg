@@ -25,15 +25,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.2325337"
-     inkscape:cx="78.427588"
-     inkscape:cy="239.28336"
+     inkscape:cx="233.7183"
+     inkscape:cy="223.9944"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:snap-bbox="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1058"
-     inkscape:window-x="-8"
+     inkscape:window-height="1018"
+     inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1">
     <inkscape:grid
@@ -429,6 +429,25 @@
          width="8"
          id="rect3137-68-3-2"
          style="fill:#808080;fill-opacity:1;stroke:none" />
+    </g>
+    <g
+       id="g3061"
+       inkscape:export-filename="C:\Users\epazera\Documents\GitHub\CoronaSDKDev\sourceart\Splorr-WOTD\MapExit.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         transform="translate(0,732.36218)"
+         y="40"
+         x="200"
+         height="40"
+         width="40"
+         id="rect3059"
+         style="fill:none;fill-opacity:1;stroke:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="rect3050"
+         d="m 212,784.36218 0,4 0,8 0,4 16,0 0,-4 0,-8 0,-4 -16,0 z m 4,4 8,0 0,8 -8,0 0,-8 z"
+         style="fill:#ffffff;stroke:none" />
     </g>
   </g>
 </svg>

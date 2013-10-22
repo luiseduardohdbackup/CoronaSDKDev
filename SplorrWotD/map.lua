@@ -36,6 +36,7 @@ function scene:createScene( event )
 			self.doorSprites[column][row]:setFrame(16)
 		end
 	end
+	self.exitImage = display.newImage(group,"Map/Exit.png")
 	self.playerSprite = display.newSprite(group,self.playerSheet,{name="player",start=1,count=4})
 	self.testButton = display.newImage(group,"EmptyButton.png")
 	self.testButton.x = 220
@@ -46,6 +47,8 @@ end
 function scene:renderMap()
 	local maze = self.gameData.maze
 	local player = self.gameData.maze.player
+	self.exitImage.x = 40 * maze.exit.column - 20
+	self.exitImage.y = 40 * maze.exit.row - 20
 	for column = 1 , maze.size.columns do
 		for row = 1 , maze.size.rows do
 			local cell = maze.columns[column][row]

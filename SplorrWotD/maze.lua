@@ -4,6 +4,15 @@ theMaze.newMaze = function(theColumns,theRows)
 	local theResult = {}
 	theResult.version = 1
 	theResult.player = {
+		statistics = {
+			experience = {
+				level = 0,
+				goal = 10,
+				points = 0
+			},
+			health = 5,
+			wounds = 0
+		},
 		direction=math.random(directions.count),
 		light = 1
 	}

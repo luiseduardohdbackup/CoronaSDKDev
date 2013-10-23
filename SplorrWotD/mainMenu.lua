@@ -96,7 +96,7 @@ function scene:tap(event)
 	elseif event.target==self.optionsButton then
 		storyboard.gotoScene("options","slideUp")
 	elseif event.target==self.aboutButton then
-		native.showWebPopup(0,0,640,360,"about.txt",{
+		native.showWebPopup(0,0,640,360,"about.html",{
 			baseUrl = system.ResourceDirectory
 		})
 	end

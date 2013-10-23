@@ -10,8 +10,10 @@ theMaze.newMaze = function(theColumns,theRows)
 				goal = 10,
 				points = 0
 			},
-			health = 5,
-			wounds = 0
+			body = 5,
+			mind = 5,
+			hits = 0,
+			movement = 7
 		},
 		direction=math.random(directions.count),
 		light = 1

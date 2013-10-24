@@ -1,23 +1,9 @@
 local theMaze = {}
 local directions = require("directions")
-theMaze.newMaze = function(theColumns,theRows)
+theMaze.newMaze = function(theColumns,theRows,theOptions)
 	local theResult = {}
 	theResult.version = 1
-	theResult.player = {
-		statistics = {
-			experience = {
-				level = 0,
-				goal = 10,
-				points = 0
-			},
-			body = 5,
-			mind = 5,
-			hits = 0,
-			movement = 7
-		},
-		direction=math.random(directions.count),
-		light = 1
-	}
+	theResult.player = theOptions.player
 	theResult.size = {
 		columns = theColumns,
 		rows = theRows
@@ -81,6 +67,7 @@ theMaze.newMaze = function(theColumns,theRows)
 			end
 		end
 	end
+	--set the player position
 	local done = false
 	while not done do
 		local theColumn = math.random(theColumns)
@@ -92,6 +79,7 @@ theMaze.newMaze = function(theColumns,theRows)
 			theResult.columns[theColumn][theRow].visitCount = 1
 		end
 	end
+	--create hidden doors
 	for theColumn = 1, theColumns do
 		for theRow = 1, theRows do
 			local theCell = theResult.columns[theColumn][theRow]
@@ -104,6 +92,7 @@ theMaze.newMaze = function(theColumns,theRows)
 			end
 		end
 	end
+	--clean up extra data
 	for theColumn = 1, theColumns do
 		for theRow = 1, theRows do
 			theResult.columns[theColumn][theRow].neighbors = nil

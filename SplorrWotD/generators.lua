@@ -6,16 +6,16 @@ function theGenerators.newGenerator(theTable)
 	for key,value in pairs(theTable) do
 		theGenerator.total = theGenerator.total + value
 	end
-	function theGenerator:generate()
-		local theValue = math.random(self.total)
-		for key,value in pairs(self.table) do
-			if value<=theValue then
-				return key
-			else
-				theValue = theValue - value
-			end
+	return theGenerator
+end
+function theGenerators.generate(theSelf)
+	local theValue = math.random(theSelf.total)
+	for key,value in pairs(theSelf.table) do
+		if value<=theValue then
+			return key
+		else
+			theValue = theValue - value
 		end
 	end
-	return theGenerator
 end
 return theGenerators

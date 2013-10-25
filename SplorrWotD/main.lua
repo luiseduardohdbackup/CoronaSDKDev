@@ -68,6 +68,7 @@ gameData.generators = {
 gameData.monsters = {
 	minotaur = {
 		name = "Minotaur",
+		groupName="minotaur",
 		movement = 5,
 		body = 5,
 		mind = 2,
@@ -79,6 +80,7 @@ gameData.monsters = {
 	},
 	rat = {
 		name = "Rat",
+		groupName="rat",
 		movement = 10,
 		body = 1,
 		mind = 1,
@@ -90,6 +92,7 @@ gameData.monsters = {
 	},
 	spider = {
 		name = "Spider",
+		groupName="spider",
 		movement = 10,
 		body = 1,
 		mind = 1,
@@ -101,6 +104,7 @@ gameData.monsters = {
 	},
 	bat = {
 		name = "Bat",
+		groupName="bat",
 		movement = 10,
 		body = 1,
 		mind = 1,

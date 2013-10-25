@@ -100,6 +100,91 @@ function scene:createScene( event )
 	self.doorUp.y = 40
 	self.doorUp.isVisible = false
 	
+	self.monsters = {}
+	self.monsters.bat = {}
+	self.monsters.bat.dodge = display.newImage(group,"Monsters/Bat/Dodge.png")
+	self.monsters.bat.dodge.x = 320
+	self.monsters.bat.dodge.y = 160
+	self.monsters.bat.dodge.isVisible = false
+	
+	self.monsters.bat.normal = display.newImage(group,"Monsters/Bat/Normal.png")
+	self.monsters.bat.normal.x = 320
+	self.monsters.bat.normal.y = 160
+	self.monsters.bat.normal.isVisible = false
+	
+	self.monsters.bat.hit = display.newImage(group,"Monsters/Bat/Hit.png")
+	self.monsters.bat.hit.x = 320
+	self.monsters.bat.hit.y = 160
+	self.monsters.bat.hit.isVisible = false
+	
+	self.monsters.bat.lunge = display.newImage(group,"Monsters/Bat/Lunge.png")
+	self.monsters.bat.lunge.x = 320
+	self.monsters.bat.lunge.y = 160
+	self.monsters.bat.lunge.isVisible = false
+	
+	self.monsters.minotaur = {}
+	self.monsters.minotaur.dodge = display.newImage(group,"Monsters/Minotaur/Dodge.png")
+	self.monsters.minotaur.dodge.x = 320
+	self.monsters.minotaur.dodge.y = 160
+	self.monsters.minotaur.dodge.isVisible = false
+	
+	self.monsters.minotaur.normal = display.newImage(group,"Monsters/Minotaur/Normal.png")
+	self.monsters.minotaur.normal.x = 320
+	self.monsters.minotaur.normal.y = 160
+	self.monsters.minotaur.normal.isVisible = false
+	
+	self.monsters.minotaur.hit = display.newImage(group,"Monsters/Minotaur/Hit.png")
+	self.monsters.minotaur.hit.x = 320
+	self.monsters.minotaur.hit.y = 160
+	self.monsters.minotaur.hit.isVisible = false
+	
+	self.monsters.minotaur.lunge = display.newImage(group,"Monsters/Minotaur/Lunge.png")
+	self.monsters.minotaur.lunge.x = 320
+	self.monsters.minotaur.lunge.y = 160
+	self.monsters.minotaur.lunge.isVisible = false
+	
+	self.monsters.rat = {}
+	self.monsters.rat.dodge = display.newImage(group,"Monsters/Rat/Dodge.png")
+	self.monsters.rat.dodge.x = 320
+	self.monsters.rat.dodge.y = 160
+	self.monsters.rat.dodge.isVisible = false
+	
+	self.monsters.rat.normal = display.newImage(group,"Monsters/Rat/Normal.png")
+	self.monsters.rat.normal.x = 320
+	self.monsters.rat.normal.y = 160
+	self.monsters.rat.normal.isVisible = true
+	
+	self.monsters.rat.hit = display.newImage(group,"Monsters/Rat/Hit.png")
+	self.monsters.rat.hit.x = 320
+	self.monsters.rat.hit.y = 160
+	self.monsters.rat.hit.isVisible = false
+	
+	self.monsters.rat.lunge = display.newImage(group,"Monsters/Rat/Lunge.png")
+	self.monsters.rat.lunge.x = 320
+	self.monsters.rat.lunge.y = 160
+	self.monsters.rat.lunge.isVisible = false
+	
+	self.monsters.spider = {}
+	self.monsters.spider.dodge = display.newImage(group,"Monsters/Spider/Dodge.png")
+	self.monsters.spider.dodge.x = 320
+	self.monsters.spider.dodge.y = 160
+	self.monsters.spider.dodge.isVisible = false
+	
+	self.monsters.spider.normal = display.newImage(group,"Monsters/Spider/Normal.png")
+	self.monsters.spider.normal.x = 320
+	self.monsters.spider.normal.y = 160
+	self.monsters.spider.normal.isVisible = false
+	
+	self.monsters.spider.hit = display.newImage(group,"Monsters/Spider/Hit.png")
+	self.monsters.spider.hit.x = 320
+	self.monsters.spider.hit.y = 160
+	self.monsters.spider.hit.isVisible = false
+	
+	self.monsters.spider.lunge = display.newImage(group,"Monsters/Spider/Lunge.png")
+	self.monsters.spider.lunge.x = 320
+	self.monsters.spider.lunge.y = 160
+	self.monsters.spider.lunge.isVisible = false
+	
 	self.turnBackground = display.newImage(group,"TurnBackground.png")
 	self.turnBackground.x = 320
 	self.turnBackground.y = 160
@@ -131,7 +216,7 @@ function scene:createScene( event )
 	self.step[3].x = 320
 	self.step[3].y = 160
 	self.step[3].isVisible = false
-	
+
 	self.light = {}
 	
 	self.light[1] = display.newImage(group,"Lights/Match.png")

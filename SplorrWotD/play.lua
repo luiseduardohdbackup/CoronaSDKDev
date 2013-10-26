@@ -18,6 +18,19 @@ function scene:renderCurrentRoom()
 		self.doorRight[theDoor].isVisible = (door==theDoor)
 	end
 	self.doorUp.isVisible = thePlayer.position.column == self.gameData.maze.exit.column and thePlayer.position.row == self.gameData.maze.exit.row
+	for theKey,theValue in pairs(self.monsters) do
+		if theRoom.monster==nil or theRoom.monster.groupName~=theKey then
+			theValue.dodge.isVisible = false
+			theValue.normal.isVisible = false
+			theValue.hit.isVisible = false
+			theValue.lunge.isVisible = false
+		else
+			theValue.dodge.isVisible = false
+			theValue.normal.isVisible = true
+			theValue.hit.isVisible = false
+			theValue.lunge.isVisible = false
+		end
+	end
 	for light=1,4 do
 		if light==thePlayer.light then
 			if not self.light[light].isVisible then
@@ -152,7 +165,7 @@ function scene:createScene( event )
 	self.monsters.rat.normal = display.newImage(group,"Monsters/Rat/Normal.png")
 	self.monsters.rat.normal.x = 320
 	self.monsters.rat.normal.y = 160
-	self.monsters.rat.normal.isVisible = true
+	self.monsters.rat.normal.isVisible = false
 	
 	self.monsters.rat.hit = display.newImage(group,"Monsters/Rat/Hit.png")
 	self.monsters.rat.hit.x = 320

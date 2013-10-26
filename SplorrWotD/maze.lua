@@ -1,5 +1,8 @@
 local theMaze = {}
 local directions = require("directions")
+local generators = require("generators")
+local monsters = require("monsters")
+local items = require("items")
 theMaze.newMaze = function(theColumns,theRows,theOptions)
 	local theResult = {}
 	theResult.version = 1
@@ -67,18 +70,6 @@ theMaze.newMaze = function(theColumns,theRows,theOptions)
 			end
 		end
 	end
-	--set the player position
-	local done = false
-	while not done do
-		local theColumn = math.random(theColumns)
-		local theRow = math.random(theRows)
-		if theResult.columns[theColumn][theRow].connectionCount~=1 then
-			done = true
-			theResult.exit = {column=theColumn,row=theRow}
-			theResult.player.position = {column=theColumn,row=theRow}
-			theResult.columns[theColumn][theRow].visitCount = 1
-		end
-	end
 	--create hidden doors
 	for theColumn = 1, theColumns do
 		for theRow = 1, theRows do
@@ -90,6 +81,36 @@ theMaze.newMaze = function(theColumns,theRows,theOptions)
 					end
 				end
 			end
+		end
+	end
+	--populate monsters
+	if theOptions.monsters~=nil then
+		local theMonsters = theOptions.monsters
+		for theKey,theValue in pairs(theMonsters) do
+			local theCount = generators.generate(theValue.countGenerator)
+			while theCount>0 do
+				local theColumn = math.random(theColumns)
+				local theRow = math.random(theRows)
+				local theCell = theResult.columns[theColumn][theRow]
+				if theCell.monster==nil then
+					if table.indexOf(theValue.doorCounts,theCell.connectionCount)~=nil then
+						theCell.monster = monsters.newMonster(theValue,theOptions.items)
+						theCount = theCount - 1
+					end
+				end
+			end
+		end
+	end
+	--set the player position
+	local done = false
+	while not done do
+		local theColumn = math.random(theColumns)
+		local theRow = math.random(theRows)
+		if theResult.columns[theColumn][theRow].connectionCount~=1 and theResult.columns[theColumn][theRow].monster==nil then
+			done = true
+			theResult.exit = {column=theColumn,row=theRow}
+			theResult.player.position = {column=theColumn,row=theRow}
+			theResult.columns[theColumn][theRow].visitCount = 1
 		end
 	end
 	--clean up extra data

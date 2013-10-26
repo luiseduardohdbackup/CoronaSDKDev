@@ -6,6 +6,8 @@ local generators = require("generators")
 local utilities = require("utilities")
 local directions = require("directions")
 local player = require("player")
+local monsters = require("monsters")
+local items = require("items")
 gameData.bounds = {
 	left = 0,
 	top = 0,
@@ -27,7 +29,8 @@ gameData.generators = {
 			[10]=generators.newGenerator({[10]=1}),
 			[11]=generators.newGenerator({[11]=1}),
 			[12]=generators.newGenerator({[12]=1}),
-			[13]=generators.newGenerator({[13]=1})
+			[13]=generators.newGenerator({[13]=1}),
+			[16]=generators.newGenerator({[16]=1})
 		},
 	oneSixth = {
 			[1]=generators.newGenerator({[0]=5,[1]=1}),
@@ -67,237 +70,267 @@ gameData.generators = {
 }
 gameData.monsters = {
 	minotaur = {
-		name = "Minotaur",
-		groupName="minotaur",
-		movement = 5,
-		body = 5,
-		mind = 2,
-		attack = utilities.cloneTable(gameData.generators.oneThird[2]),
-		defend = utilities.cloneTable(gameData.generators.oneSixth[5]),
+		instance = {
+			name = "Minotaur",
+			groupName="minotaur",
+			movement = 5,
+			body = 5,
+			mind = 2,
+			attack = utilities.cloneTable(gameData.generators.oneThird[2]),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[5])
+		},
 		doorCounts = {1},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		dropGenerator = generators.newGenerator({battleAxe=1})
 	},
 	rat = {
-		name = "Rat",
-		groupName="rat",
-		movement = 10,
-		body = 1,
-		mind = 1,
-		attack = utilities.cloneTable(gameData.generators.whole[1]),
-		defend = utilities.cloneTable(gameData.generators.whole[1]),
+		instance = {
+			name = "Rat",
+			groupName="rat",
+			movement = 10,
+			body = 1,
+			mind = 1,
+			attack = utilities.cloneTable(gameData.generators.whole[1]),
+			defend = utilities.cloneTable(gameData.generators.whole[1])
+		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
+		countGenerator = utilities.cloneTable(gameData.generators.whole[16]),
 		dropGenerator = generators.newGenerator({ratTail=1})
 	},
 	spider = {
-		name = "Spider",
-		groupName="spider",
-		movement = 10,
-		body = 1,
-		mind = 1,
-		attack = utilities.cloneTable(gameData.generators.fiveSixths[1]),
-		defend = utilities.cloneTable(gameData.generators.whole[0]),
+		instance = {
+			name = "Spider",
+			groupName="spider",
+			movement = 10,
+			body = 1,
+			mind = 1,
+			attack = utilities.cloneTable(gameData.generators.fiveSixths[1]),
+			defend = utilities.cloneTable(gameData.generators.whole[0])
+		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
+		countGenerator = utilities.cloneTable(gameData.generators.whole[16]),
 		dropGenerator = generators.newGenerator({spiderEye=1})
 	},
 	bat = {
-		name = "Bat",
-		groupName="bat",
-		movement = 10,
-		body = 1,
-		mind = 1,
-		attack = utilities.cloneTable(gameData.generators.oneThird[1]),
-		defend = utilities.cloneTable(gameData.generators.whole[0]),
+		instance = {
+			name = "Bat",
+			groupName="bat",
+			movement = 10,
+			body = 1,
+			mind = 1,
+			attack = utilities.cloneTable(gameData.generators.oneThird[1]),
+			defend = utilities.cloneTable(gameData.generators.whole[0])
+		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
+		countGenerator = utilities.cloneTable(gameData.generators.whole[16]),
 		dropGenerator = generators.newGenerator({batWing=1})
 	}
 }
 gameData.items = {
 	match = {
+		instance = {
 		name="Match",
 		itemType = "light",
 		lightLevel = 1,
-		equipSlots = {"light"},
+		equipSlots = {"light"}},
 		doorCounts = {},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[0]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[1])
 	},
 	torch = {
+		instance = {
 		name="Torch",
 		itemType = "light",
 		lightLevel = 2,
-		equipSlots = {"light"},
+		equipSlots = {"light"}},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	lantern = {
+		instance = {
 		name="Lantern",
 		itemType = "light",
 		lightLevel = 3,
-		equipSlots = {"light"},
+		equipSlots = {"light"}},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	magicLantern = {
+		instance = {
 		name="Magic Lantern",
 		itemType = "light",
 		lightLevel = 4,
-		equipSlots = {"light"},
+		equipSlots = {"light"}},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	fist = {
+		instance = {
 		name = "Fist",
 		itemType = "weapon",
 		equipSlots = {"on-hand"},
-		attack = utilities.cloneTable(gameData.generators.oneSixth[1]),
+		attack = utilities.cloneTable(gameData.generators.oneSixth[1])},
 		doorCounts = {},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[0]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	dagger = {
+		instance = {
 		name = "Dagger",
 		itemType = "weapon",
 		equipSlots = {"on-hand"},
-		attack = utilities.cloneTable(gameData.generators.oneHalf[1]),
+		attack = utilities.cloneTable(gameData.generators.oneHalf[1])},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	shortSword = {
+		instance = {
 		name = "Short Sword",
 		itemType = "weapon",
 		equipSlots = {"on-hand"},
-		attack = utilities.cloneTable(gameData.generators.oneHalf[2]),
+		attack = utilities.cloneTable(gameData.generators.oneHalf[2])},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	longSword = {
+		instance = {
 		name = "Long Sword",
 		itemType = "weapon",
 		equipSlots = {"on-hand"},
-		attack = utilities.cloneTable(gameData.generators.oneHalf[3]),
+		attack = utilities.cloneTable(gameData.generators.oneHalf[3])},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	twoHandedSword = {
+		instance = {
 		name = "Two-handed Sword",
 		itemType = "weapon",
 		equipSlots = {"on-hand","off-hand"},
-		attack = utilities.cloneTable(gameData.generators.oneHalf[4]),
+		attack = utilities.cloneTable(gameData.generators.oneHalf[4])},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	battleAxe = {
+		instance = {
 		name = "Battle Axe",
 		itemType = "weapon",
 		equipSlots = {"on-hand","off-hand"},
-		attack = utilities.cloneTable(gameData.generators.oneHalf[5]),
+		attack = utilities.cloneTable(gameData.generators.oneHalf[5])},
 		doorCounts = {},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[0]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	clothes = {
+		instance = {
 		name = "Clothes",
 		itemType = "armor",
 		equipSlots = {},
-		defend = utilities.cloneTable(gameData.generators.oneThird[2]),
+		defend = utilities.cloneTable(gameData.generators.oneThird[2])},
 		doorCounts = {},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[0]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	helmet = {
+		instance = {
 		name = "Helmet",
 		itemType = "armor",
 		equipSlots = {"head"},
-		defend = utilities.cloneTable(gameData.generators.oneThird[1]),
+		defend = utilities.cloneTable(gameData.generators.oneThird[1])},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	shield = {
+		instance = {
 		name = "Shield",
 		itemType = "armor",
 		equipSlots = {"off-hand"},
-		defend = utilities.cloneTable(gameData.generators.oneThird[1]),
+		defend = utilities.cloneTable(gameData.generators.oneThird[1])},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	chainMail = {
+		instance = {
 		name = "Chain Mail",
 		itemType = "armor",
 		equipSlots = {"torso"},
-		defend = utilities.cloneTable(gameData.generators.oneThird[1]),
+		defend = utilities.cloneTable(gameData.generators.oneThird[1])},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	plateMail = {
+		instance = {
 		name = "Plate Mail",
 		itemType = "armor",
 		equipSlots = {"torso"},
-		defend = utilities.cloneTable(gameData.generators.oneThird[2]),
+		defend = utilities.cloneTable(gameData.generators.oneThird[2])},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	boots = {
+		instance = {
 		name = "Boots",
 		itemType = "armor",
 		equipSlots = {"feet"},
-		defend = utilities.cloneTable(gameData.generators.whole[0]),
+		defend = utilities.cloneTable(gameData.generators.whole[0])},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	ladderPiece = {
+		instance = {
 		name = "Ladder Piece",
-		itemType = "quest",
+		itemType = "quest"},
 		doorCounts = {1},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[13]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	ham = {
+		instance = {
 		name = "Lovely Ham",
-		itemType = "healing",
+		itemType = "healing"},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	potion = {
+		instance = {
 		name = "Potion",
-		itemType = "healing",
+		itemType = "healing"},
 		doorCounts = {1,2,3,4},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[1]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	ratTail = {
+		instance = {
 		name = "Rat Tail",
-		itemType = "trophy",
+		itemType = "trophy"},
 		doorCounts = {},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[0]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	spiderEye = {
+		instance = {
 		name = "Spider Eye",
-		itemType = "trophy",
+		itemType = "trophy"},
 		doorCounts = {},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[0]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])
 	},
 	batWing = {
+		instance = {
 		name = "Bat Wing",
-		itemType = "trophy",
+		itemType = "trophy"},
 		doorCounts = {},
 		countGenerator = utilities.cloneTable(gameData.generators.whole[0]),
 		inventoryGenerator = utilities.cloneTable(gameData.generators.whole[0])

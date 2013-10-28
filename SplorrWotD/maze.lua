@@ -83,6 +83,25 @@ theMaze.newMaze = function(theColumns,theRows,theOptions)
 			end
 		end
 	end
+	--populate items
+	if theOptions.items~=nil then
+		local theItems = theOptions.items
+		for theKey,theValue in pairs(theItems) do
+			local theCount = generators.generate(theValue.countGenerator)
+			while theCount>0 do
+				local theColumn = math.random(theColumns)
+				local theRow = math.random(theRows)
+				local theCell = theResult.columns[theColumn][theRow]
+				if table.indexOf(theValue.doorCounts,theCell.connectionCount)~=nil then
+					if theCell.items==nil then
+						theCell.items = {}
+					end
+					table.insert(theCell.items,items.newRoomItem(theValue))
+					theCount = theCount - 1
+				end
+			end
+		end
+	end
 	--populate monsters
 	if theOptions.monsters~=nil then
 		local theMonsters = theOptions.monsters

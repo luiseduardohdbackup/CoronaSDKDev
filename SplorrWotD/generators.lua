@@ -8,10 +8,15 @@ function theGenerators.newGenerator(theTable)
 	end
 	return theGenerator
 end
+function theGenerators.newConstantGenerator(theConstant)
+	local theTable = {}
+	theTable[theConstant]=1
+	return theGenerators.newGenerator(theTable)
+end
 function theGenerators.generate(theSelf)
 	local theValue = math.random(theSelf.total)
 	for key,value in pairs(theSelf.table) do
-		if value<=theValue then
+		if theValue<=value then
 			return key
 		else
 			theValue = theValue - value

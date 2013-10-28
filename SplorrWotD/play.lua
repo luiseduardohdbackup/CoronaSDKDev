@@ -1,6 +1,7 @@
 local storyboard = require("storyboard")
 local scene = storyboard.newScene()
 local directions = require("directions")
+local player = require("player")
 
 function scene:renderCurrentRoom()
 	local thePlayer = self.gameData.maze.player
@@ -25,10 +26,10 @@ function scene:renderCurrentRoom()
 			theValue.hit.isVisible = false
 			theValue.lunge.isVisible = false
 		else
-			theValue.dodge.isVisible = false
-			theValue.normal.isVisible = true
-			theValue.hit.isVisible = false
-			theValue.lunge.isVisible = false
+			theValue.dodge.isVisible = self.dodgeTimer ~= nil
+			theValue.normal.isVisible = self.dodgeTimer==nil and self.lungeTimer==nil
+			theValue.hit.isVisible = self.dodgeTimer==nil and self.lungeTimer==nil and self.hitTimer~=nil
+			theValue.lunge.isVisible = self.lungeTimer~=nil
 		end
 	end
 	for light=1,4 do
@@ -286,7 +287,11 @@ function scene:createScene( event )
 	self.testButton.y = 340
 	self.testButton:addEventListener("tap",self)
 
-	
+	self.attackButton = display.newImage(group,"EmptyButton.png")
+	self.attackButton.x = 180
+	self.attackButton.y = 340
+	self.attackButton:addEventListener("tap",self)
+
 end
 
 function scene:timer(event)
@@ -316,14 +321,30 @@ function scene:timer(event)
 		end
 	elseif event.source == self.stepTimer then
 		self.stepTimer = nil
-		for theImage=0,3 do
-			self.step[theImage].isVisible=false
+		for _,v in pairs(self.step) do
+			v.isVisible=false
 		end
+	elseif event.source == self.dodgeTimer then
+		self.dodgeTimer=nil
+		self:renderCurrentRoom()
+	elseif event.source == self.hitTimer then
+		self.hitTimer=nil
+		self:renderCurrentRoom()
 	end
 end
 
-function scene:tap(event)
-	if event.target == self.moveForwardButton then
+function scene:hasActiveTimer()
+	return self.stepTimer~=nil
+		or self.turnAroundTimer~=nil
+		or self.turnRightTimer~=nil
+		or self.turnLeftTimer~=nil
+		or self.dodgeTimer~=nil
+		or self.lungeTimer~=nil
+		or self.hitTimer~=nil
+end
+
+function scene:moveForward()
+	if not self:hasActiveTimer() then
 		local thePlayer = self.gameData.maze.player
 		local theRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
 		self.step[self.doorLightTable[thePlayer.light][theRoom.connections[thePlayer.direction]]].isVisible=true	
@@ -342,33 +363,71 @@ function scene:tap(event)
 			self.hitRect.alpha=1
 			transition.to(self.hitRect,{alpha=0})
 		end
+	end
+end
+
+function scene:turnLeft()
+	if not self:hasActiveTimer() then
+		self.turnBackground.isVisible = true
+		self.turnForeground.x = 0
+		self.turnForeground.isVisible = true
+		self.turnLeftTimer = timer.performWithDelay(25,self,0)
+		self.gameData.maze.player.direction = directions.lefts[self.gameData.maze.player.direction]
+		self:renderCurrentRoom()
+	end
+end
+
+function scene:turnRight()
+	if not self:hasActiveTimer() then
+		self.turnBackground.isVisible = true
+		self.turnForeground.x = 640
+		self.turnForeground.isVisible = true
+		self.turnRightTimer = timer.performWithDelay(25,self,0)
+		self.gameData.maze.player.direction = directions.rights[self.gameData.maze.player.direction]
+		self:renderCurrentRoom()
+	end
+end
+
+function scene:turnAround()
+	if not self:hasActiveTimer() then
+		self.turnBackground.isVisible = true
+		self.turnForeground.x = 640
+		self.turnForeground.isVisible = true
+		self.turnAroundTimer = timer.performWithDelay(25,self,0)
+		self.gameData.maze.player.direction = directions.opposites[self.gameData.maze.player.direction]
+		self:renderCurrentRoom()
+	end
+end
+
+function scene:attackMonster()
+	local thePlayer = self.gameData.maze.player
+	local theRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
+	local theMonster = theRoom.monster
+	if theMonster~=nil and not self:hasActiveTimer() then
+		local theRoll = player.rollAttack(thePlayer)
+		if theRoll>0 then
+			self.monsters[theMonster.groupName].hit.alpha=1
+			transition.to(self.monsters[theMonster.groupName].hit,{alpha=0})
+			self.hitTimer = timer.performWithDelay(500,self)
+			self:renderCurrentRoom()
+		else
+			self.dodgeTimer = timer.performWithDelay(500,self)
+			self:renderCurrentRoom()
+		end
+	end
+end
+
+function scene:tap(event)
+	if event.target == self.moveForwardButton then
+		self:moveForward()
 	elseif event.target == self.turnLeftButton then
-		if self.turnLeftTimer == nil then
-			self.turnBackground.isVisible = true
-			self.turnForeground.x = 0
-			self.turnForeground.isVisible = true
-			self.turnLeftTimer = timer.performWithDelay(25,self,0)
-			self.gameData.maze.player.direction = directions.lefts[self.gameData.maze.player.direction]
-			self:renderCurrentRoom()
-		end
+		self:turnLeft()
 	elseif event.target == self.turnRightButton then
-		if self.turnRightTimer == nil then
-			self.turnBackground.isVisible = true
-			self.turnForeground.x = 640
-			self.turnForeground.isVisible = true
-			self.turnRightTimer = timer.performWithDelay(25,self,0)
-			self.gameData.maze.player.direction = directions.rights[self.gameData.maze.player.direction]
-			self:renderCurrentRoom()
-		end
+		self:turnRight()
 	elseif event.target == self.turnAroundButton then
-		if self.turnAroundTimer == nil then
-			self.turnBackground.isVisible = true
-			self.turnForeground.x = 640
-			self.turnForeground.isVisible = true
-			self.turnAroundTimer = timer.performWithDelay(25,self,0)
-			self.gameData.maze.player.direction = directions.opposites[self.gameData.maze.player.direction]
-			self:renderCurrentRoom()
-		end
+		self:turnAround()
+	elseif event.target == self.attackButton then
+		self:attackMonster()
 	elseif event.target == self.lightButton then
 		self.gameData.maze.player.light = self.gameData.maze.player.light + 1
 		if self.gameData.maze.player.light>4 then
@@ -380,52 +439,36 @@ function scene:tap(event)
 	end
 end
 
--- Called BEFORE scene has moved onscreen:
 function scene:willEnterScene( event )
     local group = self.view
 	self:renderCurrentRoom()
-
 end
 
-
--- Called immediately after scene has moved onscreen:
 function scene:enterScene( event )
-        local group = self.view
+    local group = self.view
 end
 
-
--- Called when scene is about to move offscreen:
 function scene:exitScene( event )
-        local group = self.view
+    local group = self.view
 end
 
-
--- Called AFTER scene has finished moving offscreen:
 function scene:didExitScene( event )
-        local group = self.view
+    local group = self.view
 end
 
-
--- Called prior to the removal of scene's "view" (display group)
 function scene:destroyScene( event )
-        local group = self.view
+    local group = self.view
 end
 
-
--- Called if/when overlay scene is displayed via storyboard.showOverlay()
 function scene:overlayBegan( event )
-        local group = self.view
-        local overlay_name = event.sceneName  -- name of the overlay scene
+	local group = self.view
+	local overlay_name = event.sceneName  -- name of the overlay scene
 end
 
-
--- Called if/when overlay scene is hidden/removed via storyboard.hideOverlay()
 function scene:overlayEnded( event )
-        local group = self.view
-        local overlay_name = event.sceneName  -- name of the overlay scene
+	local group = self.view
+	local overlay_name = event.sceneName  -- name of the overlay scene
 end
-
-
 
 ---------------------------------------------------------------------------------
 -- END OF YOUR IMPLEMENTATION

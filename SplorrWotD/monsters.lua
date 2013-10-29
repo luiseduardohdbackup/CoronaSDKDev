@@ -22,4 +22,7 @@ function theMonsters.newMonster(theMonsterDescriptor,theItemTable)
 	end
 	return theMonster
 end
+function theMonsters.rollDefend(theMonster)
+	return generators.generate(theMonster.defend)
+end
 return theMonsters

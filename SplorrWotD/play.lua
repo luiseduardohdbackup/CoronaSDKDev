@@ -2,6 +2,7 @@ local storyboard = require("storyboard")
 local scene = storyboard.newScene()
 local directions = require("directions")
 local player = require("player")
+local monsters = require("monsters")
 
 function scene:renderCurrentRoom()
 	local thePlayer = self.gameData.maze.player
@@ -28,6 +29,7 @@ function scene:renderCurrentRoom()
 		else
 			theValue.dodge.isVisible = self.dodgeTimer ~= nil
 			theValue.normal.isVisible = self.dodgeTimer==nil and self.lungeTimer==nil
+			theValue.normal.alpha = 1
 			theValue.hit.isVisible = self.dodgeTimer==nil and self.lungeTimer==nil and self.hitTimer~=nil
 			theValue.lunge.isVisible = self.lungeTimer~=nil
 		end
@@ -329,7 +331,22 @@ function scene:timer(event)
 		self:renderCurrentRoom()
 	elseif event.source == self.hitTimer then
 		self.hitTimer=nil
+		local thePlayer = self.gameData.maze.player
+		local theRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
+		local theMonster = theRoom.monster
 		self:renderCurrentRoom()
+		if theMonster.hits>=theMonster.body then
+			if theRoom.monster.inventory~=nil then
+				for _,v in pairs(theRoom.monster.inventory) do
+					if theRoom.items==nil then
+						theRoom.items = {}
+					end
+					table.insert(theRoom.items,v)
+				end
+			end
+			theRoom.monster = nil
+			transition.to(self.monsters[theMonster.groupName].normal,{alpha=0})
+		end
 	end
 end
 
@@ -406,10 +423,21 @@ function scene:attackMonster()
 	if theMonster~=nil and not self:hasActiveTimer() then
 		local theRoll = player.rollAttack(thePlayer)
 		if theRoll>0 then
-			self.monsters[theMonster.groupName].hit.alpha=1
-			transition.to(self.monsters[theMonster.groupName].hit,{alpha=0})
-			self.hitTimer = timer.performWithDelay(500,self)
-			self:renderCurrentRoom()
+			theRoll = theRoll - monsters.rollDefend(theMonster)
+			if theRoll>0 then
+				if theMonster.wounds ==nil then
+					theMonster.hits = theRoll
+				else
+					theMonster.hits = theMonster.hits + theRoll
+				end
+				self.monsters[theMonster.groupName].hit.alpha=1
+				transition.to(self.monsters[theMonster.groupName].hit,{alpha=0})
+				self.hitTimer = timer.performWithDelay(500,self)
+				self:renderCurrentRoom()
+			else
+				self.dodgeTimer = timer.performWithDelay(500,self)
+				self:renderCurrentRoom()
+			end
 		else
 			self.dodgeTimer = timer.performWithDelay(500,self)
 			self:renderCurrentRoom()

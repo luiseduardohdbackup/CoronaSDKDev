@@ -128,6 +128,126 @@ gameData.monsters = {
 		doorCounts = {2,3,4},
 		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
 		dropGenerator = generators.newGenerator({batWing=1})
+	},
+	chaosWarrior = {
+		instance = {
+			name = "Chaos Warrior",
+			groupName="chaosWarrior",
+			movement = 7,
+			body = 3,
+			mind = 3,
+			attack = utilities.cloneTable(gameData.generators.oneThird[4]),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[4])),
+			experience = 1
+		},
+		doorCounts = {2,3,4},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		dropGenerator = generators.newGenerator({batWing=1})
+	},
+	gargoyle = {
+		instance = {
+			name = "Gargoyle",
+			groupName="gargoyle",
+			movement = 6,
+			body = 3,
+			mind = 4,
+			attack = utilities.cloneTable(gameData.generators.oneThird[4]),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[5])),
+			experience = 1
+		},
+		doorCounts = {2,3,4},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		dropGenerator = generators.newGenerator({batWing=1})
+	},
+	mummy = {
+		instance = {
+			name = "Mummy",
+			groupName="mummy",
+			movement = 4,
+			body = 2,
+			mind = 0,
+			attack = utilities.cloneTable(gameData.generators.oneThird[3]),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[4])),
+			experience = 1
+		},
+		doorCounts = {2,3,4},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		dropGenerator = generators.newGenerator({batWing=1})
+	},
+	skeleton = {
+		instance = {
+			name = "Skeleton",
+			groupName="skeleton",
+			movement = 6,
+			body = 1,
+			mind = 0,
+			attack = utilities.cloneTable(gameData.generators.oneThird[2]),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[2])),
+			experience = 1
+		},
+		doorCounts = {2,3,4},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		dropGenerator = generators.newGenerator({batWing=1})
+	},
+	fimir = {
+		instance = {
+			name = "Fimir",
+			groupName="fimir",
+			movement = 6,
+			body = 2,
+			mind = 3,
+			attack = utilities.cloneTable(gameData.generators.oneThird[3]),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[3])),
+			experience = 1
+		},
+		doorCounts = {2,3,4},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		dropGenerator = generators.newGenerator({batWing=1})
+	},
+	goblin = {
+		instance = {
+			name = "Goblin",
+			groupName="goblin",
+			movement = 10,
+			body = 1,
+			mind = 1,
+			attack = utilities.cloneTable(gameData.generators.oneThird[2]),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[1])),
+			experience = 1
+		},
+		doorCounts = {2,3,4},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		dropGenerator = generators.newGenerator({batWing=1})
+	},
+	orc = {
+		instance = {
+			name = "Orc",
+			groupName="orc",
+			movement = 8,
+			body = 1,
+			mind = 2,
+			attack = utilities.cloneTable(gameData.generators.oneThird[3]),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[2])),
+			experience = 1
+		},
+		doorCounts = {2,3,4},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		dropGenerator = generators.newGenerator({batWing=1})
+	},
+	zombie = {
+		instance = {
+			name = "Zombie",
+			groupName="zombie",
+			movement = 5,
+			body = 1,
+			mind = 0,
+			attack = utilities.cloneTable(gameData.generators.oneThird[2]),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[3])),
+			experience = 1
+		},
+		doorCounts = {2,3,4},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		dropGenerator = generators.newGenerator({batWing=1})
 	}
 }
 gameData.items = {

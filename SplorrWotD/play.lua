@@ -259,6 +259,18 @@ function scene:createScene( event )
 	self.hitRect:setFillColor(128,0,0)
 	self.hitRect.alpha = 0
 	
+	self.missText = display.newText({
+		parent = group,
+		text="Miss!",
+		x=320,
+		y=160,
+		font="8bitoperator JVE",
+		fontSize=96,
+		align="center"
+	})
+	self.missText:setTextColor(128,128,128)
+	self.missText.alpha=0
+	
 	self.moveForwardButton = display.newImage(group,"MoveForward.png")
 	self.moveForwardButton.x = 300
 	self.moveForwardButton.y = 340
@@ -329,6 +341,7 @@ function scene:timer(event)
 	elseif event.source == self.dodgeTimer then
 		self.dodgeTimer=nil
 		self:renderCurrentRoom()
+		self.monsterTurnTimer = timer.performWithDelay(500,self)
 	elseif event.source == self.hitTimer then
 		self.hitTimer=nil
 		local thePlayer = self.gameData.maze.player
@@ -346,6 +359,38 @@ function scene:timer(event)
 			end
 			theRoom.monster = nil
 			transition.to(self.monsters[theMonster.groupName].normal,{alpha=0})
+		else
+			self.monsterTurnTimer = timer.performWithDelay(500,self)
+		end
+	elseif event.source == self.monsterTurnTimer then
+		self.monsterTurnTimer = nil
+		local thePlayer = self.gameData.maze.player
+		local theRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
+		local theMonster = theRoom.monster
+		if theMonster~=nil then
+			self.lungeTimer = timer.performWithDelay(500,self)
+			self.monsterAttackTimer = timer.performWithDelay(250,self)
+			self:renderCurrentRoom()
+		end
+	elseif event.source == self.lungeTimer then
+		self.lungeTimer = nil
+		self:renderCurrentRoom()
+	elseif event.source == self.monsterAttackTimer then
+		self.monsterAttackTimer = nil
+		local thePlayer = self.gameData.maze.player
+		local theRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
+		local theMonster = theRoom.monster
+		if theMonster~=nil then
+			local theRoll = monsters.rollAttack(theMonster)
+			theRoll = theRoll - player.rollDefend(thePlayer)
+			if theRoll>0 then
+				self.hitRect.alpha = 1
+				transition.to(self.hitRect,{alpha=0})
+			else
+				self.missText.alpha=1
+				transition.to(self.missText,{alpha=0})
+				--missed
+			end
 		end
 	end
 end
@@ -358,6 +403,8 @@ function scene:hasActiveTimer()
 		or self.dodgeTimer~=nil
 		or self.lungeTimer~=nil
 		or self.hitTimer~=nil
+		or self.monsterTurnTimer~=nil
+		or self.monsterAttackTimer~=nil
 end
 
 function scene:moveForward()

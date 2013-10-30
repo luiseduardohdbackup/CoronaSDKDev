@@ -137,11 +137,11 @@ gameData.monsters = {
 			body = 3,
 			mind = 3,
 			attack = utilities.cloneTable(gameData.generators.oneThird[4]),
-			defend = utilities.cloneTable(gameData.generators.oneSixth[4])),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[4]),
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
 		dropGenerator = generators.newGenerator({batWing=1})
 	},
 	gargoyle = {
@@ -152,11 +152,11 @@ gameData.monsters = {
 			body = 3,
 			mind = 4,
 			attack = utilities.cloneTable(gameData.generators.oneThird[4]),
-			defend = utilities.cloneTable(gameData.generators.oneSixth[5])),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[5]),
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
 		dropGenerator = generators.newGenerator({batWing=1})
 	},
 	mummy = {
@@ -167,11 +167,11 @@ gameData.monsters = {
 			body = 2,
 			mind = 0,
 			attack = utilities.cloneTable(gameData.generators.oneThird[3]),
-			defend = utilities.cloneTable(gameData.generators.oneSixth[4])),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[4]),
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
 		dropGenerator = generators.newGenerator({batWing=1})
 	},
 	skeleton = {
@@ -182,11 +182,11 @@ gameData.monsters = {
 			body = 1,
 			mind = 0,
 			attack = utilities.cloneTable(gameData.generators.oneThird[2]),
-			defend = utilities.cloneTable(gameData.generators.oneSixth[2])),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[2]),
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
 		dropGenerator = generators.newGenerator({batWing=1})
 	},
 	fimir = {
@@ -197,11 +197,11 @@ gameData.monsters = {
 			body = 2,
 			mind = 3,
 			attack = utilities.cloneTable(gameData.generators.oneThird[3]),
-			defend = utilities.cloneTable(gameData.generators.oneSixth[3])),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[3]),
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
 		dropGenerator = generators.newGenerator({batWing=1})
 	},
 	goblin = {
@@ -212,11 +212,11 @@ gameData.monsters = {
 			body = 1,
 			mind = 1,
 			attack = utilities.cloneTable(gameData.generators.oneThird[2]),
-			defend = utilities.cloneTable(gameData.generators.oneSixth[1])),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[1]),
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
 		dropGenerator = generators.newGenerator({batWing=1})
 	},
 	orc = {
@@ -227,11 +227,11 @@ gameData.monsters = {
 			body = 1,
 			mind = 2,
 			attack = utilities.cloneTable(gameData.generators.oneThird[3]),
-			defend = utilities.cloneTable(gameData.generators.oneSixth[2])),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[2]),
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
 		dropGenerator = generators.newGenerator({batWing=1})
 	},
 	zombie = {
@@ -242,11 +242,11 @@ gameData.monsters = {
 			body = 1,
 			mind = 0,
 			attack = utilities.cloneTable(gameData.generators.oneThird[2]),
-			defend = utilities.cloneTable(gameData.generators.oneSixth[3])),
+			defend = utilities.cloneTable(gameData.generators.oneSixth[3]),
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
 		dropGenerator = generators.newGenerator({batWing=1})
 	}
 }

@@ -25,4 +25,7 @@ end
 function theMonsters.rollDefend(theMonster)
 	return generators.generate(theMonster.defend)
 end
+function theMonsters.rollAttack(theMonster)
+	return generators.generate(theMonster.attack)
+end
 return theMonsters

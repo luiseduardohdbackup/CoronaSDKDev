@@ -34,6 +34,16 @@ function scene:renderCurrentRoom()
 			theValue.lunge.isVisible = self.lungeTimer~=nil
 		end
 	end
+	for _,v in pairs(self.items) do
+		v.isVisible=false
+	end
+	if theRoom.items~=nil then
+		for _,v in ipairs(theRoom.items) do
+			if self.items[v.image]~=nil then
+				self.items[v.image].isVisible=true
+			end
+		end
+	end
 	for light=1,4 do
 		if light==thePlayer.light then
 			if not self.light[light].isVisible then
@@ -115,6 +125,86 @@ function scene:createScene( event )
 	self.doorUp.x = 320
 	self.doorUp.y = 40
 	self.doorUp.isVisible = false
+	
+	-- items
+	
+	self.items = {}
+	self.items.ham = display.newImage(group,"Items/ham.png")
+	self.items.ham.x = 160+16
+	self.items.ham.y = 240+16
+	self.items.ham.isVisible = false
+	
+	self.items.potion = display.newImage(group,"Items/potion.png")
+	self.items.potion.x = 160+32+16
+	self.items.potion.y = 240+16
+	self.items.potion.isVisible = false
+	
+	self.items.torch = display.newImage(group,"Items/torch.png")
+	self.items.torch.x = 160+64+16
+	self.items.torch.y = 240+16
+	self.items.torch.isVisible = false
+	
+	self.items.lantern = display.newImage(group,"Items/lantern.png")
+	self.items.lantern.x = 160+96+16
+	self.items.lantern.y = 240+16
+	self.items.lantern.isVisible = false
+	
+	self.items.magiclantern = display.newImage(group,"Items/magiclantern.png")
+	self.items.magiclantern.x = 160+128+16
+	self.items.magiclantern.y = 240+16
+	self.items.magiclantern.isVisible = false
+	
+	self.items.helmet = display.newImage(group,"Items/helmet.png")
+	self.items.helmet.x = 160+160+16
+	self.items.helmet.y = 240+16
+	self.items.helmet.isVisible = false
+	
+	self.items.shield = display.newImage(group,"Items/shield.png")
+	self.items.shield.x = 160+192+16
+	self.items.shield.y = 240+16
+	self.items.shield.isVisible = false
+	
+	self.items.chainmail = display.newImage(group,"Items/chainmail.png")
+	self.items.chainmail.x = 160+224+16
+	self.items.chainmail.y = 240+16
+	self.items.chainmail.isVisible = false
+	
+	self.items.platemail = display.newImage(group,"Items/platemail.png")
+	self.items.platemail.x = 160+256+16
+	self.items.platemail.y = 240+16
+	self.items.platemail.isVisible = false
+	
+	self.items.boots = display.newImage(group,"Items/boots.png")
+	self.items.boots.x = 160+288+16
+	self.items.boots.y = 240+16
+	self.items.boots.isVisible = false
+	
+	self.items.dagger = display.newImage(group,"Items/dagger.png")
+	self.items.dagger.x = 160+16
+	self.items.dagger.y = 240+16
+	self.items.dagger.isVisible = false
+	
+	self.items.shortsword = display.newImage(group,"Items/shortsword.png")
+	self.items.shortsword.x = 160+32+16
+	self.items.shortsword.y = 240+32+16
+	self.items.shortsword.isVisible = false
+	
+	self.items.longsword = display.newImage(group,"Items/longsword.png")
+	self.items.longsword.x = 160+64+16
+	self.items.longsword.y = 240+32+16
+	self.items.longsword.isVisible = false
+	
+	self.items.twohandedsword = display.newImage(group,"Items/twohandedsword.png")
+	self.items.twohandedsword.x = 160+96+16
+	self.items.twohandedsword.y = 240+32+16
+	self.items.twohandedsword.isVisible = false
+	
+	self.items.battleaxe = display.newImage(group,"Items/battleaxe.png")
+	self.items.battleaxe.x = 160+128+16
+	self.items.battleaxe.y = 240+32+16
+	self.items.battleaxe.isVisible = false
+	
+	-- monsters
 	
 	self.monsters = {}
 	self.monsters.bat = {}
@@ -201,6 +291,8 @@ function scene:createScene( event )
 	self.monsters.spider.lunge.y = 160
 	self.monsters.spider.lunge.isVisible = false
 	
+	-- turns
+	
 	self.turnBackground = display.newImage(group,"TurnBackground.png")
 	self.turnBackground.x = 320
 	self.turnBackground.y = 160
@@ -210,6 +302,8 @@ function scene:createScene( event )
 	self.turnForeground.x = 320
 	self.turnForeground.y = 160
 	self.turnForeground.isVisible = false
+	
+	-- steps
 	
 	self.step = {}
 	
@@ -255,6 +349,8 @@ function scene:createScene( event )
 	self.light[4].y = 160
 	self.light[4].isVisible=false
 	
+	-- hit and miss
+	
 	self.hitRect = display.newRect(group,0,0,640,320)
 	self.hitRect:setFillColor(128,0,0)
 	self.hitRect.alpha = 0
@@ -270,6 +366,8 @@ function scene:createScene( event )
 	})
 	self.missText:setTextColor(128,128,128)
 	self.missText.alpha=0
+	
+	-- buttons
 	
 	self.moveForwardButton = display.newImage(group,"MoveForward.png")
 	self.moveForwardButton.x = 300

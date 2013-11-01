@@ -404,6 +404,11 @@ function scene:createScene( event )
 	self.attackButton.y = 340
 	self.attackButton:addEventListener("tap",self)
 
+	self.inventoryButton = display.newImage(group,"EmptyButton.png")
+	self.inventoryButton.x = 140
+	self.inventoryButton.y = 340
+	self.inventoryButton:addEventListener("tap",self)
+
 end
 
 function scene:timer(event)
@@ -609,6 +614,8 @@ function scene:tap(event)
 		self:renderCurrentRoom()
 	elseif event.target == self.testButton then
 		storyboard.gotoScene("map")
+	elseif event.target == self.inventoryButton then
+		storyboard.gotoScene("inventory")
 	end
 end
 

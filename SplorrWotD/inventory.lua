@@ -1,13 +1,24 @@
 local storyboard = require( "storyboard" )
+local widget = require("widget")
 local scene = storyboard.newScene()
 
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
     local group = self.view
-end
-
-function scene:timer(event)
-	local group = self.view
+	local theScrollView = widget.newScrollView({
+		top=0,
+		left=0,
+		width=256,
+		height=256,
+		hideBackground=true,
+		horizontalScrollDisabled=true,
+		maskFile = "ScrollViewMask.png"
+	})
+	group:insert(theScrollView)
+	local theImageRect = display.newImageRect("RoomWalls.png",640,320)
+	theImageRect.x = 320
+	theImageRect.y = 160
+	theScrollView:insert(theImageRect)
 end
 
 -- Called BEFORE scene has moved onscreen:

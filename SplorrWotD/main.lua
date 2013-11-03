@@ -111,7 +111,7 @@ gameData.monsters = {
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(8)),
 		dropGenerator = generators.newGenerator({spiderEye=1})
 	},
 	bat = {
@@ -126,7 +126,7 @@ gameData.monsters = {
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(8)),
 		dropGenerator = generators.newGenerator({batWing=1})
 	},
 	chaosWarrior = {
@@ -171,7 +171,7 @@ gameData.monsters = {
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(2)),
 		dropGenerator = generators.newGenerator({bandage=1})
 	},
 	skeleton = {
@@ -186,7 +186,7 @@ gameData.monsters = {
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(8)),
 		dropGenerator = generators.newGenerator({bone=1})
 	},
 	fimir = {
@@ -246,7 +246,7 @@ gameData.monsters = {
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(4)),
 		dropGenerator = generators.newGenerator({rottenFlesh=1})
 	}
 }

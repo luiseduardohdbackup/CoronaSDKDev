@@ -206,6 +206,7 @@ function scene:createScene( event )
 	
 	-- monsters
 	
+	--bat
 	self.monsters = {}
 	self.monsters.bat = {}
 	self.monsters.bat.dodge = display.newImage(group,"Monsters/Bat/Dodge.png")
@@ -228,6 +229,7 @@ function scene:createScene( event )
 	self.monsters.bat.lunge.y = 160
 	self.monsters.bat.lunge.isVisible = false
 	
+	--skeleton
 	self.monsters.skeleton = {}
 	self.monsters.skeleton.dodge = display.newImage(group,"Monsters/Skeleton/Dodge.png")
 	self.monsters.skeleton.dodge.x = 320
@@ -249,6 +251,7 @@ function scene:createScene( event )
 	self.monsters.skeleton.lunge.y = 160
 	self.monsters.skeleton.lunge.isVisible = false
 	
+	--minotaur
 	self.monsters.minotaur = {}
 	self.monsters.minotaur.dodge = display.newImage(group,"Monsters/Minotaur/Dodge.png")
 	self.monsters.minotaur.dodge.x = 320
@@ -270,6 +273,7 @@ function scene:createScene( event )
 	self.monsters.minotaur.lunge.y = 160
 	self.monsters.minotaur.lunge.isVisible = false
 	
+	--rat
 	self.monsters.rat = {}
 	self.monsters.rat.dodge = display.newImage(group,"Monsters/Rat/Dodge.png")
 	self.monsters.rat.dodge.x = 320
@@ -291,6 +295,7 @@ function scene:createScene( event )
 	self.monsters.rat.lunge.y = 160
 	self.monsters.rat.lunge.isVisible = false
 	
+	--spider
 	self.monsters.spider = {}
 	self.monsters.spider.dodge = display.newImage(group,"Monsters/Spider/Dodge.png")
 	self.monsters.spider.dodge.x = 320
@@ -311,6 +316,51 @@ function scene:createScene( event )
 	self.monsters.spider.lunge.x = 320
 	self.monsters.spider.lunge.y = 160
 	self.monsters.spider.lunge.isVisible = false
+	
+	--zombie
+	self.monsters.zombie = {}
+	self.monsters.zombie.dodge = display.newImage(group,"Monsters/Zombie/Dodge.png")
+	self.monsters.zombie.dodge.x = 320
+	self.monsters.zombie.dodge.y = 160
+	self.monsters.zombie.dodge.isVisible = false
+	
+	self.monsters.zombie.normal = display.newImage(group,"Monsters/Zombie/Normal.png")
+	self.monsters.zombie.normal.x = 320
+	self.monsters.zombie.normal.y = 160
+	self.monsters.zombie.normal.isVisible = false
+	
+	self.monsters.zombie.hit = display.newImage(group,"Monsters/Zombie/Hit.png")
+	self.monsters.zombie.hit.x = 320
+	self.monsters.zombie.hit.y = 160
+	self.monsters.zombie.hit.isVisible = false
+	
+	self.monsters.zombie.lunge = display.newImage(group,"Monsters/Zombie/Lunge.png")
+	self.monsters.zombie.lunge.x = 320
+	self.monsters.zombie.lunge.y = 160
+	self.monsters.zombie.lunge.isVisible = false
+
+	--mummy
+	self.monsters.mummy = {}
+	self.monsters.mummy.dodge = display.newImage(group,"Monsters/Mummy/Dodge.png")
+	self.monsters.mummy.dodge.x = 320
+	self.monsters.mummy.dodge.y = 160
+	self.monsters.mummy.dodge.isVisible = false
+	
+	self.monsters.mummy.normal = display.newImage(group,"Monsters/Mummy/Normal.png")
+	self.monsters.mummy.normal.x = 320
+	self.monsters.mummy.normal.y = 160
+	self.monsters.mummy.normal.isVisible = false
+	
+	self.monsters.mummy.hit = display.newImage(group,"Monsters/Mummy/Hit.png")
+	self.monsters.mummy.hit.x = 320
+	self.monsters.mummy.hit.y = 160
+	self.monsters.mummy.hit.isVisible = false
+	
+	self.monsters.mummy.lunge = display.newImage(group,"Monsters/Mummy/Lunge.png")
+	self.monsters.mummy.lunge.x = 320
+	self.monsters.mummy.lunge.y = 160
+	self.monsters.mummy.lunge.isVisible = false
+	
 	
 	-- turns
 	

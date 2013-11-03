@@ -172,7 +172,7 @@ gameData.monsters = {
 		},
 		doorCounts = {2,3,4},
 		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
-		dropGenerator = generators.newGenerator({batWing=1})
+		dropGenerator = generators.newGenerator({bandage=1})
 	},
 	skeleton = {
 		instance = {
@@ -186,8 +186,8 @@ gameData.monsters = {
 			experience = 1
 		},
 		doorCounts = {2,3,4},
-		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
-		dropGenerator = generators.newGenerator({batWing=1})
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(16)),
+		dropGenerator = generators.newGenerator({bone=1})
 	},
 	fimir = {
 		instance = {
@@ -247,7 +247,7 @@ gameData.monsters = {
 		},
 		doorCounts = {2,3,4},
 		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
-		dropGenerator = generators.newGenerator({batWing=1})
+		dropGenerator = generators.newGenerator({rottenFlesh=1})
 	}
 }
 gameData.items = {
@@ -484,6 +484,36 @@ gameData.items = {
 		instance = {
 			name = "Spider Eye",
 			image="spidereye",
+			itemType = "trophy"
+		},
+		doorCounts = {},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
+		inventoryGenerator = utilities.cloneTable(generators.newConstantGenerator(0))
+	},
+	bone = {
+		instance = {
+			name = "Bone",
+			image="bone",
+			itemType = "trophy"
+		},
+		doorCounts = {},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
+		inventoryGenerator = utilities.cloneTable(generators.newConstantGenerator(0))
+	},
+	rottenFlesh = {
+		instance = {
+			name = "Rotten Flesh",
+			image="rottenflesh",
+			itemType = "trophy"
+		},
+		doorCounts = {},
+		countGenerator = utilities.cloneTable(generators.newConstantGenerator(0)),
+		inventoryGenerator = utilities.cloneTable(generators.newConstantGenerator(0))
+	},
+	bandage = {
+		instance = {
+			name = "Bandage",
+			image="bandage",
 			itemType = "trophy"
 		},
 		doorCounts = {},

@@ -181,7 +181,7 @@ function scene:createScene( event )
 	
 	self.items.dagger = display.newImage(group,"Items/dagger.png")
 	self.items.dagger.x = 160+16
-	self.items.dagger.y = 240+16
+	self.items.dagger.y = 240+32+16
 	self.items.dagger.isVisible = false
 	
 	self.items.shortsword = display.newImage(group,"Items/shortsword.png")
@@ -227,6 +227,27 @@ function scene:createScene( event )
 	self.monsters.bat.lunge.x = 320
 	self.monsters.bat.lunge.y = 160
 	self.monsters.bat.lunge.isVisible = false
+	
+	self.monsters.skeleton = {}
+	self.monsters.skeleton.dodge = display.newImage(group,"Monsters/Skeleton/Dodge.png")
+	self.monsters.skeleton.dodge.x = 320
+	self.monsters.skeleton.dodge.y = 160
+	self.monsters.skeleton.dodge.isVisible = false
+	
+	self.monsters.skeleton.normal = display.newImage(group,"Monsters/Skeleton/Normal.png")
+	self.monsters.skeleton.normal.x = 320
+	self.monsters.skeleton.normal.y = 160
+	self.monsters.skeleton.normal.isVisible = false
+	
+	self.monsters.skeleton.hit = display.newImage(group,"Monsters/Skeleton/Hit.png")
+	self.monsters.skeleton.hit.x = 320
+	self.monsters.skeleton.hit.y = 160
+	self.monsters.skeleton.hit.isVisible = false
+	
+	self.monsters.skeleton.lunge = display.newImage(group,"Monsters/Skeleton/Lunge.png")
+	self.monsters.skeleton.lunge.x = 320
+	self.monsters.skeleton.lunge.y = 160
+	self.monsters.skeleton.lunge.isVisible = false
 	
 	self.monsters.minotaur = {}
 	self.monsters.minotaur.dodge = display.newImage(group,"Monsters/Minotaur/Dodge.png")

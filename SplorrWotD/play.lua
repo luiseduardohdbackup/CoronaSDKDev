@@ -211,22 +211,22 @@ function scene:createScene( event )
 	self.monsters.bat = {}
 	self.monsters.bat.dodge = display.newImage(group,"Monsters/Bat/Dodge.png")
 	self.monsters.bat.dodge.x = 320
-	self.monsters.bat.dodge.y = 160+25
+	self.monsters.bat.dodge.y = 160
 	self.monsters.bat.dodge.isVisible = false
 	
 	self.monsters.bat.normal = display.newImage(group,"Monsters/Bat/Normal.png")
 	self.monsters.bat.normal.x = 320
-	self.monsters.bat.normal.y = 160+30
+	self.monsters.bat.normal.y = 160
 	self.monsters.bat.normal.isVisible = false
 	
 	self.monsters.bat.hit = display.newImage(group,"Monsters/Bat/Hit.png")
 	self.monsters.bat.hit.x = 320
-	self.monsters.bat.hit.y = 160+30
+	self.monsters.bat.hit.y = 160
 	self.monsters.bat.hit.isVisible = false
 	
 	self.monsters.bat.lunge = display.newImage(group,"Monsters/Bat/Lunge.png")
 	self.monsters.bat.lunge.x = 320
-	self.monsters.bat.lunge.y = 160+35
+	self.monsters.bat.lunge.y = 160
 	self.monsters.bat.lunge.isVisible = false
 	
 	--skeleton

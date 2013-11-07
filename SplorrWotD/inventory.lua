@@ -2,25 +2,73 @@ local storyboard = require( "storyboard" )
 local widget = require("widget")
 local scene = storyboard.newScene()
 
+function scene:updateInventory()
+    local group = self.view
+	if self.inventoryView~=nil then
+		self.inventoryView:removeSelf()
+		self.inventoryView=nil
+	end
+	self.inventoryView = widget.newTableView({
+		left=160,
+		top=0,
+		width=320,
+		height=320,
+		backgroundColor={0,0,0},
+		onRowRender=function(event)
+			local theImage = display.newImage(event.row,"Items/"..event.row.params.value.image..".png",0,event.row.contentHeight/2-16)
+			local theText = display.newText({parent=event.row,text=event.row.params.value.name,x=136,y=event.row.contentHeight/2,font="8bitoperator JVE",fontSize=28,width=208,align="left"})
+			theText:setTextColor(255,255,255)
+			local theButton = widget.newButton({
+				left=240,
+				top=0,
+				width=80,
+				height=event.row.contentHeight,
+				label="Take"
+			})
+			event.row:insert(theButton)
+		end
+	})
+	group:insert(self.inventoryView)
+	local thePlayer = self.gameData.maze.player
+	local theRoom = self.gameData.maze.columns[thePlayer.position.column][thePlayer.position.row]
+	print(self.inventoryView.numChildren)
+	if theRoom.items~=nil then
+		for i,v in ipairs(theRoom.items) do
+			self.inventoryView:insertRow({
+				params={index=i,value=v},
+				rowHeight=32,
+				rowColor={
+					default={0,0,0,255},
+					over={0,0,0,255}
+				},
+				lineColor={255,255,255,255}
+			})
+		end
+	end
+end
+
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
     local group = self.view
 	self.gameData = event.params
-	local theScrollView = widget.newScrollView({
-		top=0,
-		left=0,
-		width=256,
-		height=256,
-		hideBackground=true,
-		horizontalScrollDisabled=true,
-		maskFile = "ScrollViewMask.png"
-	})
-	group:insert(theScrollView)
+	
+	self.inventoryButton = display.newImage(group,"EmptyButton.png")
+	self.inventoryButton.x = 140
+	self.inventoryButton.y = 340
+	self.inventoryButton:addEventListener("tap",self)
 end
+
+function scene:tap(event)
+	if event.target == self.inventoryButton then
+		storyboard.gotoScene("play")
+	end
+end
+
 
 -- Called BEFORE scene has moved onscreen:
 function scene:willEnterScene( event )
     local group = self.view
+	self:updateInventory()
 end
 
 

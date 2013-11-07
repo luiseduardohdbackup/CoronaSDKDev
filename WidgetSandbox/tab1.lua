@@ -87,7 +87,7 @@ function scene:createScene( event )
 	local function onRowRender( event )
 		local phase = event.phase
 		local row = event.row
-		
+		local rowIcon = display.newImage(row,"ham.png")
 		local rowTitle = display.newText( row, "Row " .. row.index, 0, 0, nil, 14 )
 		rowTitle.x = row.x - ( row.contentWidth * 0.5 ) + ( rowTitle.contentWidth * 0.5 ) + LEFT_PADDING
 		rowTitle.y = row.contentHeight * 0.5

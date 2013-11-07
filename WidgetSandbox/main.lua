@@ -35,6 +35,8 @@
 --
 --*********************************************************************************************
 
+print(system.getInfo("deviceID"))
+
 -- Hide the status bar
 display.setStatusBar( display.HiddenStatusBar )
 

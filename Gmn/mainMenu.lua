@@ -12,16 +12,16 @@ ads.init("admob","ca-app-pub-6417425738244044/6541055152",adListener)
 function scene:createScene( event )
         local group = self.view
 	self.gameData = event.params
-	display.newRect(group,0,0,640,480):setFillColor(0,0,0)
+	display.newRect(group,0,0,1280,720):setFillColor(0,0,0)
 
-		display.newText({
+	display.newText({
 		parent = group,
-		text="JetLag 2013",
+		text="Guess My Number",
 		x=display.contentCenterX,
 		y=display.contentCenterY,
-		width=640,
+		width=960,
 		font="8bitoperator JVE",
-		fontSize=128,
+		fontSize=192,
 		align="center"
 	}):setTextColor(0,255,0)
 

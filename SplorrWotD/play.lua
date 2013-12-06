@@ -438,47 +438,49 @@ function scene:createScene( event )
 	self.missText:setTextColor(128,128,128)
 	self.missText.alpha=0
 	
+	-- hearts
+	
 	-- buttons
 	
-	self.moveForwardButton = display.newImage(group,"MoveForward.png")
-	self.moveForwardButton.x = 300
-	self.moveForwardButton.y = 340
-	self.moveForwardButton:addEventListener("tap",self)
+	--self.moveForwardButton = display.newImage(group,"MoveForward.png")
+	--self.moveForwardButton.x = 300
+	--self.moveForwardButton.y = 340
+	--self.moveForwardButton:addEventListener("tap",self)
 
-	self.turnLeftButton = display.newImage(group,"TurnLeft.png")
-	self.turnLeftButton.x = 260
-	self.turnLeftButton.y = 340
-	self.turnLeftButton:addEventListener("tap",self)
+	--self.turnLeftButton = display.newImage(group,"TurnLeft.png")
+	--self.turnLeftButton.x = 260
+	--self.turnLeftButton.y = 340
+	--self.turnLeftButton:addEventListener("tap",self)
 
-	self.turnRightButton = display.newImage(group,"TurnRight.png")
-	self.turnRightButton.x = 380
-	self.turnRightButton.y = 340
-	self.turnRightButton:addEventListener("tap",self)
+	--self.turnRightButton = display.newImage(group,"TurnRight.png")
+	--self.turnRightButton.x = 380
+	--self.turnRightButton.y = 340
+	--self.turnRightButton:addEventListener("tap",self)
 
-	self.turnAroundButton = display.newImage(group,"TurnAround.png")
-	self.turnAroundButton.x = 340
-	self.turnAroundButton.y = 340
-	self.turnAroundButton:addEventListener("tap",self)
+	--self.turnAroundButton = display.newImage(group,"TurnAround.png")
+	--self.turnAroundButton.x = 340
+	--self.turnAroundButton.y = 340
+	--self.turnAroundButton:addEventListener("tap",self)
 
-	self.lightButton = display.newImage(group,"LightLevel.png")
-	self.lightButton.x = 420
-	self.lightButton.y = 340
-	self.lightButton:addEventListener("tap",self)
+	--self.lightButton = display.newImage(group,"LightLevel.png")
+	--self.lightButton.x = 420
+	--self.lightButton.y = 340
+	--self.lightButton:addEventListener("tap",self)
 
-	self.testButton = display.newImage(group,"EmptyButton.png")
-	self.testButton.x = 220
-	self.testButton.y = 340
-	self.testButton:addEventListener("tap",self)
+	--self.testButton = display.newImage(group,"EmptyButton.png")
+	--self.testButton.x = 220
+	--self.testButton.y = 340
+	--self.testButton:addEventListener("tap",self)
 
-	self.attackButton = display.newImage(group,"EmptyButton.png")
-	self.attackButton.x = 180
-	self.attackButton.y = 340
-	self.attackButton:addEventListener("tap",self)
+	--self.attackButton = display.newImage(group,"EmptyButton.png")
+	--self.attackButton.x = 180
+	--self.attackButton.y = 340
+	--self.attackButton:addEventListener("tap",self)
 
-	self.inventoryButton = display.newImage(group,"EmptyButton.png")
-	self.inventoryButton.x = 140
-	self.inventoryButton.y = 340
-	self.inventoryButton:addEventListener("tap",self)
+	--self.inventoryButton = display.newImage(group,"EmptyButton.png")
+	--self.inventoryButton.x = 140
+	--self.inventoryButton.y = 340
+	--self.inventoryButton:addEventListener("tap",self)
 
 end
 

@@ -1,120 +1,118 @@
 display.setDefault("background",85,85,85)
-game = {}
-game.board =  require("ASCIIBoard")
-game.stateNames = {
-	splash="splash",
-	mainMenu="mainMenu",
-	startGame = "startGame",
-	startRun = "startRun",
-	play="play",
-	endRun="endRun",
-	gameOver="gameOver",
-	instructions = "instructions",
-	options = "options"
+local asciiBoardCell = require("ASCIIBoardCell")
+
+local gameData = {}
+gameData.profileManager = require("profileManager")
+gameData.profile = gameData.profileManager.loadProfile()
+gameData.player={}
+gameData.constants={}
+gameData.constants.screen={
+	width=1920,
+	height=1080
 }
-game.states={}
--------------------------------------------------------------------------------------------------------------------------------------
-game.states.splash=require("SplashState")
--------------------------------------------------------------------------------------------------------------------------------------
-game.states.mainMenu=require("MainMenuState")
--------------------------------------------------------------------------------------------------------------------------------------
-game.states.instructions=require("InstructionsState")
--------------------------------------------------------------------------------------------------------------------------------------
-game.states.options=require("OptionsState")
--------------------------------------------------------------------------------------------------------------------------------------
-game.states.startGame=require("StartGameState")
--------------------------------------------------------------------------------------------------------------------------------------
-game.states.startRun=require("StartRunState")
--------------------------------------------------------------------------------------------------------------------------------------
-game.states.play=require("PlayState")
--------------------------------------------------------------------------------------------------------------------------------------
-game.delays = {	
-	1000,
-	500,
-	333,
-	250,
-	200,
-	167,
-	143,
-	125,
-	111,
-	90,
-	83,
-	76,
-	71,
-	67,
-	63,
-	59,
-	56,
-	53,
-	50
+gameData.constants.grid={
+	columns=48,
+	rows=27
 }
-game.charms = {
+gameData.constants.cell={
+	width=32,
+	height=32
+}
+gameData.constants.grid.width = gameData.constants.grid.columns * gameData.constants.cell.width
+gameData.constants.grid.height = gameData.constants.grid.rows * gameData.constants.cell.height
+gameData.constants.grid.x = (gameData.constants.screen.width-gameData.constants.grid.width)/2
+gameData.constants.grid.y = (gameData.constants.screen.height-gameData.constants.grid.height)/2
+gameData.constants.leftWalls = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}
+gameData.constants.rightWalls = {48,47,46,45,44,43,42,41,40,39,38,37,36,35,34}
+gameData.constants.tailLength = 5
+gameData.charms = {
 	walls={
-		{character=219,foregroundColor=game.board.colors.blue,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.green,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.cyan,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.red,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.magenta,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.brown,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.lightGray,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.gray,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.lightBlue,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.lightGreen,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.lightCyan,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.lightRed,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.lightMagenta,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.yellow,backgroundColor=game.board.colors.black},
-		{character=219,foregroundColor=game.board.colors.black,backgroundColor=game.board.colors.black}
+		asciiBoardCell.createCell(219,1,0),
+		asciiBoardCell.createCell(219,2,0),
+		asciiBoardCell.createCell(219,3,0),
+		asciiBoardCell.createCell(219,4,0),
+		asciiBoardCell.createCell(219,5,0),
+		asciiBoardCell.createCell(219,6,0),
+		asciiBoardCell.createCell(219,7,0),
+		asciiBoardCell.createCell(219,8,0),
+		asciiBoardCell.createCell(219,9,0),
+		asciiBoardCell.createCell(219,10,0),
+		asciiBoardCell.createCell(219,11,0),
+		asciiBoardCell.createCell(219,12,0),
+		asciiBoardCell.createCell(219,13,0),
+		asciiBoardCell.createCell(219,14,0),
+		asciiBoardCell.createCell(219,0,0),
 	},
-	block={character=219,foregroundColor=game.board.colors.white,backgroundColor=game.board.colors.black},
-	dude={character=2,foregroundColor=game.board.colors.white,backgroundColor=game.board.colors.black},
-	invincibleDude={character=2,foregroundColor=game.board.colors.lightCyan,backgroundColor=game.board.colors.black},
-	warningDude={character=2,foregroundColor=game.board.colors.lightRed,backgroundColor=game.board.colors.black},
-	shieldDude={character=1,foregroundColor=game.board.colors.lightBlue,backgroundColor=game.board.colors.black},
-	life={character=1,foregroundColor=game.board.colors.white,backgroundColor=game.board.colors.black},
-	heart={character=3,foregroundColor=game.board.colors.red,backgroundColor=game.board.colors.black},
-	stopper={character=4,foregroundColor=game.board.colors.red,backgroundColor=game.board.colors.black},
-	bomb={character=15,foregroundColor=game.board.colors.gray,backgroundColor=game.board.colors.black},
-	question={character=63,foregroundColor=game.board.colors.gray,backgroundColor=game.board.colors.black},
-	straighten={character=18,foregroundColor=game.board.colors.green,backgroundColor=game.board.colors.black},
-	left={character=26,foregroundColor=game.board.colors.green,backgroundColor=game.board.colors.black},
-	right={character=27,foregroundColor=game.board.colors.green,backgroundColor=game.board.colors.black},
-	up={character=24,foregroundColor=game.board.colors.green,backgroundColor=game.board.colors.black},
-	down={character=25,foregroundColor=game.board.colors.green,backgroundColor=game.board.colors.black},
-	star={character=42,foregroundColor=game.board.colors.brown,backgroundColor=game.board.colors.black}
+	block = asciiBoardCell.createCell(219,15,0),
+	star = asciiBoardCell.createCell(42,6,0),
+	dude = asciiBoardCell.createCell(2,15,0),
 }
--------------------------------------------------------------------------------------------------------------------------------------
-game.lookUps = {}
-game.lookUps.simulatorKeyboard ={
+
+gameData.resources={
+	imageSheet = graphics.newImageSheet("ascii.png",{width=40,height=40,numFrames=256}),
+	colors=require("Colors")
+}
+
+local storyboard = require("storyboard")
+storyboard.loadScene("splash",false,gameData)
+storyboard.loadScene("mainMenu",false,gameData)
+storyboard.loadScene("instructions",false,gameData)
+storyboard.loadScene("options",false,gameData)
+storyboard.loadScene("about",false,gameData)
+storyboard.loadScene("shop",false,gameData)
+storyboard.loadScene("feedTheFish",false,gameData)
+storyboard.loadScene("play",false,gameData)
+storyboard.loadScene("quit",false,gameData)
+storyboard.gotoScene("splash","crossFade")
+
+local lookUps = {}
+lookUps.simulatorKeyboard ={
 	down="down",
 	up="up",
 	left="left",
 	right="right",
-	space="O",
-	tab="U",
-	enter="Y",
+	enter="O",
+	space="U",
+	tab="Y",
 	escape="A"
 }
-game.onKeyEvent = function(event)
+lookUps.ouyaKeyboard={
+	down="down",
+	up="up",
+	left="left",
+	right="right",
+	buttonA="O",
+	buttonB="A",
+	buttonX="O",
+	buttonY="Y"
+}
+function onKeyEvent(event)
+	local currentScene = storyboard.getScene(storyboard.getCurrentSceneName())
 	if event.device==nil then
-			local theKey = game.lookUps.simulatorKeyboard[event.keyName]
-			if theKey~=nil then
-				if event.phase=="down" then
-					game.states[game.states.current].onKeyDown(theKey)
-				elseif event.phase=="up" then
-					game.states[game.states.current].onKeyUp(theKey)
-				end
+		local theKey = lookUps.simulatorKeyboard[event.keyName]
+		if theKey~=nil then
+			if event.phase=="down" then
+				currentScene:onKeyDown(theKey)
+			elseif event.phase=="up" then
+				currentScene:onKeyUp(theKey)
 			end
+		end
 	else
+		local theKey = lookUps.ouyaKeyboard[event.keyName]
+		if theKey~=nil then
+			if event.phase=="down" then
+				currentScene:onKeyDown(theKey)
+			elseif event.phase=="up" then
+				currentScene:onKeyUp(theKey)
+			end
+		end
 	end
 end
 
-game.onAxisEvent = function(event)
+function onAxisEvent(event)
+	local currentScene = storyboard.getScene(storyboard.getCurrentSceneName())
 end
 
-Runtime:addEventListener( "key", game.onKeyEvent )
+Runtime:addEventListener( "key", onKeyEvent )
 
-Runtime:addEventListener( "axis", game.onAxisEvent )
-
-game.states.splash.start()
+Runtime:addEventListener( "axis", onAxisEvent )

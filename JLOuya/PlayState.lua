@@ -22,14 +22,28 @@ return {
 		local blockPosition = math.random(game.board.leftWalls[game.player.level]+1,game.board.rightWalls[game.player.level]-1)
 		game.board:setCharm(blockPosition,game.board.fieldY+game.board.fieldHeight-1,game.charms.block)
 		
+		local theCell = game.board.cells[game.player.position+game.board.fieldDeltaX][game.player.tail+game.board.fieldDeltaY]
+		print(theCell.foreground.cachedFrame)
+		if theCell.foreground.cachedFrame==219 then
+			game.states.play.finish(game.stateNames.endRun)
+		end
+		
+		game.player.position=game.player.position+game.player.direction
 		
 		
 		game.board:setCharm(game.player.position+game.board.fieldDeltaX,game.player.tail+game.board.fieldDeltaY,game.charms.dude)
 	end,
 	finish=function(nextState)
+		game.states.play.stopTimer()
 		game.states[nextState].start()
 	end,
 	onKeyDown=function(theKey)
+		if theKey=="left" then
+			game.player.direction=-1
+		elseif theKey=="right" then
+			game.player.direction=1
+		elseif theKey=="O" then
+		end
 	end,
 	onKeyUp=function(theKey)
 	end

@@ -15,19 +15,10 @@ function scene:renderMenu()
 	self.board:render(self.grid,self.gameData.resources.colors)
 end
 
-function scene:createScene( event )
-    local group = self.view
-	self.gameData = event.params
-	self.grid = asciiGrid.createGrid(
-		group,
-		self.gameData.constants.grid.x,
-		self.gameData.constants.grid.y,
-		self.gameData.constants.grid.columns,
-		self.gameData.constants.grid.rows,
-		self.gameData.constants.cell.width,
-		self.gameData.constants.cell.height,
-		self.gameData.resources.imageSheet)
-	self.board = asciiBoard.createBoard(1,1,self.gameData.constants.grid.columns,self.gameData.constants.grid.rows)
+function scene:redraw()
+	local columns = self.gameData.constants.grid.columns
+	local rows = self.gameData.constants.grid.rows
+	local colors = self.gameData.resources.colors
 
 	self.board:clear(asciiBoardCell.createCell(0,0,0))
 
@@ -46,13 +37,39 @@ function scene:createScene( event )
 	self.board:vLine(1,2,rows-2,asciiBoardCell.createCell(186,colors.blue,colors.lightGray))
 	self.board:vLine(columns,2,rows-2,asciiBoardCell.createCell(186,colors.blue,colors.lightGray))
 
+	self.board:set(columns-1,rows-1,asciiBoardCell.createCell(155,colors.green,colors.black))
+	local temp = tostring(self.gameData.profile.pennies)
+	self.board:writeText(columns-1-string.len(temp),rows-1,temp,asciiBoardCell.createCell(0,colors.green,colors.black))
+	
+	self:renderMenu()
+end
+
+function scene:createScene( event )
+    local group = self.view
+	self.gameData = event.params
+	self.grid = asciiGrid.createGrid(
+		group,
+		self.gameData.constants.grid.x,
+		self.gameData.constants.grid.y,
+		self.gameData.constants.grid.columns,
+		self.gameData.constants.grid.rows,
+		self.gameData.constants.cell.width,
+		self.gameData.constants.cell.height,
+		self.gameData.resources.imageSheet)
+	self.board = asciiBoard.createBoard(1,1,self.gameData.constants.grid.columns,self.gameData.constants.grid.rows)
+
+	local columns = self.gameData.constants.grid.columns
+	local rows = self.gameData.constants.grid.rows
+	local colors = self.gameData.resources.colors
+	
+
 	self.menuItemNormalCell = asciiBoardCell.createCell(0,colors.lightGray,colors.black)
 	self.menuItemHiliteCell = asciiBoardCell.createCell(0,colors.black,colors.lightGray)
 	self.menuX=16
 	self.menuY=12
 	self.currentMenuItem=1
 	self.menuItems={
-		"   Start Game   ",
+		"   Play  Game   ",
 		"  Instructions  ",
 		"    Options     ",
 		"     About      ",
@@ -79,31 +96,30 @@ function scene:createScene( event )
 		"crossFade"
 	}
 
-	self.board:set(columns-1,rows-1,asciiBoardCell.createCell(155,colors.green,colors.black))
-	local temp = tostring(self.gameData.profile.pennies)
-	self.board:writeText(columns-1-string.len(temp),rows-1,temp,asciiBoardCell.createCell(0,colors.green,colors.black))
-	
-	self:renderMenu()
 end
 
 function scene:onKeyDown(theKey)
+	local soundManager = self.gameData.soundManager
 	--local colors = self.gameData.resources.colors
 	--self.board:writeText(2,2,"                                ",asciiBoardCell.createCell(0,colors.lightCyan,colors.black))
 	--self.board:writeText(2,2,theKey,asciiBoardCell.createCell(0,colors.lightCyan,colors.black))
 	--self.board:render(self.grid,self.gameData.resources.colors)
 	if theKey=="down" then
+		soundManager.play("menuChange")
 		self.currentMenuItem=self.currentMenuItem+1
 		if self.currentMenuItem>#self.menuItems then
 			self.currentMenuItem=1
 		end
 		self:renderMenu()
 	elseif theKey=="up" then
+		soundManager.play("menuChange")
 		self.currentMenuItem=self.currentMenuItem-1
 		if self.currentMenuItem<1 then
 			self.currentMenuItem=#self.menuItems
 		end
 		self:renderMenu()
 	elseif theKey=="O" then
+		soundManager.play("transition")
 		storyboard:gotoScene(self.nextScenes[self.currentMenuItem],self.transitions[self.currentMenuItem]);
 	end
 end
@@ -113,6 +129,7 @@ end
 
 function scene:willEnterScene( event )
     local group = self.view
+	self:redraw()
 end
 
 function scene:enterScene( event )

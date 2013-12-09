@@ -4,6 +4,9 @@ local asciiBoardCell = require("ASCIIBoardCell")
 local gameData = {}
 gameData.profileManager = require("profileManager")
 gameData.profile = gameData.profileManager.loadProfile()
+gameData.musicManager = require("musicManager")
+--gameData.musicManager.start()
+gameData.soundManager = require("soundManager")
 gameData.player={}
 gameData.constants={}
 gameData.constants.screen={
@@ -44,8 +47,15 @@ gameData.charms = {
 		asciiBoardCell.createCell(219,0,0),
 	},
 	block = asciiBoardCell.createCell(219,15,0),
+	nextToBlock = asciiBoardCell.createCell(255,0,0),
 	star = asciiBoardCell.createCell(42,6,0),
 	dude = asciiBoardCell.createCell(2,15,0),
+	splat = asciiBoardCell.createCell(15,4,0),
+	cent = asciiBoardCell.createCell(155,2,0),
+	oButton = asciiBoardCell.createCell(string.byte("O"),2,10),
+	uButton = asciiBoardCell.createCell(string.byte("U"),1,9),
+	yButton = asciiBoardCell.createCell(string.byte("Y"),6,14),
+	aButton = asciiBoardCell.createCell(string.byte("A"),4,12),
 }
 
 gameData.resources={

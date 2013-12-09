@@ -4,25 +4,15 @@ local asciiBoard = require("ASCIIBoard")
 local asciiBoardCell = require("ASCIIBoardCell")
 local scene = storyboard.newScene()
 
-function scene:createScene( event )
-    local group = self.view
-	self.gameData = event.params
-	self.grid = asciiGrid.createGrid(
-		group,
-		self.gameData.constants.grid.x,
-		self.gameData.constants.grid.y,
-		self.gameData.constants.grid.columns,
-		self.gameData.constants.grid.rows,
-		self.gameData.constants.cell.width,
-		self.gameData.constants.cell.height,
-		self.gameData.resources.imageSheet)
-	self.board = asciiBoard.createBoard(1,1,self.gameData.constants.grid.columns,self.gameData.constants.grid.rows)
 
+function scene:redraw()
 	self.board:clear(asciiBoardCell.createCell(0,0,0))
 
 	local columns = self.gameData.constants.grid.columns
 	local rows = self.gameData.constants.grid.rows
 	local colors = self.gameData.resources.colors
+	local charms = self.gameData.charms
+	local profile = self.gameData.profile
 	
 	self.board:set(1,1,asciiBoardCell.createCell(201,colors.blue,colors.lightGray))
 	self.board:set(1,rows,asciiBoardCell.createCell(200,colors.blue,colors.lightGray))
@@ -36,15 +26,77 @@ function scene:createScene( event )
 	self.board:vLine(columns,2,rows-2,asciiBoardCell.createCell(186,colors.blue,colors.lightGray))
 	
 	self.board:writeText(2,2,"Shop",asciiBoardCell.createCell(0,colors.white,colors.black))
-	self.board:writeText(2,26,"A",asciiBoardCell.createCell(0,colors.red,colors.lightRed))
+	
+	self.board:writeText(2,3,"Prices:",asciiBoardCell.createCell(0,colors.white,colors.black))
+	for index,value in ipairs(self.menu) do
+		if index==self.selectedItem then
+			self.board:writeText(self.menuX,self.menuY+index-1,value,self.hiliteCell)
+			if profile.pennies>=self.prices[index] then
+				self.board:set(2,25,charms.oButton)
+				self.board:writeText(4,25,"Buy Item",asciiBoardCell.createCell(0,colors.white,colors.black))
+			end
+		else
+			self.board:writeText(self.menuX,self.menuY+index-1,value,self.normalCell)
+		end
+	end
+	
+	self.board:set(2,26,charms.aButton)
 	self.board:writeText(4,26,"Go Back",asciiBoardCell.createCell(0,colors.white,colors.black))
 
 	self.board:render(self.grid,self.gameData.resources.colors)
 end
 
+function scene:createScene( event )
+    local group = self.view
+	self.gameData = event.params
+	local colors = self.gameData.resources.colors
+	self.grid = asciiGrid.createGrid(
+		group,
+		self.gameData.constants.grid.x,
+		self.gameData.constants.grid.y,
+		self.gameData.constants.grid.columns,
+		self.gameData.constants.grid.rows,
+		self.gameData.constants.cell.width,
+		self.gameData.constants.cell.height,
+		self.gameData.resources.imageSheet)
+	self.board = asciiBoard.createBoard(1,1,self.gameData.constants.grid.columns,self.gameData.constants.grid.rows)
+	self.selectedItem=1
+	self.prices={100,250,500,1000,10,50,100,250}
+	self.menu={
+		"Fish Bowl                   -  100"..string.char(155),
+		"Small Fish Tank             -  250"..string.char(155),
+		"Medium Fish Tank            -  500"..string.char(155),
+		"Large Fish Tank             - 1000"..string.char(155),
+		"Single Serving Fish Pellet  -   10"..string.char(155),
+		"Week Supply of Fish Pellets -   50"..string.char(155),
+		"One Tank Tablet             -  100"..string.char(155),
+		"Three Tank Tables           -  250"..string.char(155),
+	}
+	self.normalCell = asciiBoardCell.createCell(0,colors.white,colors.black)
+	self.hiliteCell = asciiBoardCell.createCell(0,colors.black,colors.white)
+	self.menuX=2
+	self.menuY=4
+end
+
 function scene:onKeyDown(theKey)
+	local soundManager = self.gameData.soundManager
 	if theKey=="A" then
+		soundManager:play("transition")
 		storyboard.gotoScene("mainMenu","slideUp")
+	elseif theKey=="down" then
+		self.selectedItem=self.selectedItem+1
+		if self.selectedItem>#self.menu then
+			self.selectedItem=1
+		end
+		soundManager.play("menuChange")
+		self:redraw()
+	elseif theKey=="up" then
+		self.selectedItem=self.selectedItem-1
+		if self.selectedItem<1 then
+			self.selectedItem=#self.menu
+		end
+		soundManager.play("menuChange")
+		self:redraw()
 	end
 end
 
@@ -53,6 +105,7 @@ end
 
 function scene:willEnterScene( event )
     local group = self.view
+	self:redraw()
 end
 
 function scene:enterScene( event )

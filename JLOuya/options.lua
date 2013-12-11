@@ -4,20 +4,7 @@ local asciiBoard = require("ASCIIBoard")
 local asciiBoardCell = require("ASCIIBoardCell")
 local scene = storyboard.newScene()
 
-function scene:createScene( event )
-    local group = self.view
-	self.gameData = event.params
-	self.grid = asciiGrid.createGrid(
-		group,
-		self.gameData.constants.grid.x,
-		self.gameData.constants.grid.y,
-		self.gameData.constants.grid.columns,
-		self.gameData.constants.grid.rows,
-		self.gameData.constants.cell.width,
-		self.gameData.constants.cell.height,
-		self.gameData.resources.imageSheet)
-	self.board = asciiBoard.createBoard(1,1,self.gameData.constants.grid.columns,self.gameData.constants.grid.rows)
-
+function scene:redraw()
 	self.board:clear(asciiBoardCell.createCell(0,0,0))
 
 	local columns = self.gameData.constants.grid.columns
@@ -39,12 +26,130 @@ function scene:createScene( event )
 	self.board:writeText(2,26,"A",asciiBoardCell.createCell(0,colors.red,colors.lightRed))
 	self.board:writeText(4,26,"Go Back",asciiBoardCell.createCell(0,colors.white,colors.black))
 
+	for index,value in ipairs(self.menuItems) do
+		if index==self.selectedItem then
+			self.board:writeText(self.menuX,self.menuY+index-1,value,self.hiliteCell)
+		else
+			self.board:writeText(self.menuX,self.menuY+index-1,value,self.normalCell)
+		end
+	end
+
 	self.board:render(self.grid,self.gameData.resources.colors)
 end
 
+function scene:createScene( event )
+    local group = self.view
+	self.gameData = event.params
+	self.grid = asciiGrid.createGrid(
+		group,
+		self.gameData.constants.grid.x,
+		self.gameData.constants.grid.y,
+		self.gameData.constants.grid.columns,
+		self.gameData.constants.grid.rows,
+		self.gameData.constants.cell.width,
+		self.gameData.constants.cell.height,
+		self.gameData.resources.imageSheet)
+	self.board = asciiBoard.createBoard(1,1,self.gameData.constants.grid.columns,self.gameData.constants.grid.rows)
+	
+	local colors = self.gameData.resources.colors
+	self.menuX=2
+	self.menuY=2
+	self.menuItems={
+		"Music Volume",
+		"Sound Volume",
+	}
+	self.selectedItem=1
+	self.normalCell = asciiBoardCell.createCell(0,colors.white,colors.black)
+	self.hiliteCell = asciiBoardCell.createCell(0,colors.black,colors.white)
+
+end
+
+function scene:decrementValue()
+	local soundManager = self.gameData.soundManager
+	local musicManager = self.gameData.musicManager
+	local profile = self.gameData.profile
+	if self.selectedItem==1 then
+		profile.musicVolume=profile.musicVolume-0.1
+		if profile.musicVolume<0 then 
+			profile.musicVolume=0
+		else
+			soundManager.play("menuChange")
+		end
+		musicManager.setVolume(profile.musicVolume)
+		self.gameData.profileManager.saveProfile(profile)
+	elseif self.selectedItem==2 then
+		profile.soundVolume=profile.soundVolume-0.1
+		if profile.soundVolume<0 then 
+			profile.soundVolume=0
+		else
+			soundManager.play("menuChange")
+		end
+		soundManager.setVolume(profile.soundVolume)
+		self.gameData.profileManager.saveProfile(profile)
+	end
+	self:redraw()
+end
+
+function scene:incrementValue()
+	local soundManager = self.gameData.soundManager
+	local musicManager = self.gameData.musicManager
+	local profile = self.gameData.profile
+	if self.selectedItem==1 then
+		profile.musicVolume=profile.musicVolume+0.1
+		if profile.musicVolume>1 then 
+			profile.musicVolume=1
+		else
+			soundManager.play("menuChange")
+		end
+		musicManager.setVolume(profile.musicVolume)
+		self.gameData.profileManager.saveProfile(profile)
+	elseif self.selectedItem==2 then
+		profile.soundVolume=profile.soundVolume+0.1
+		if profile.soundVolume>1 then 
+			profile.soundVolume=1
+		else
+			soundManager.play("menuChange")
+		end
+		soundManager.setVolume(profile.soundVolume)
+		self.gameData.profileManager.saveProfile(profile)
+	end
+	self:redraw()
+end
+
+function scene:nextMenuItem()
+	local soundManager = self.gameData.soundManager
+	soundManager.play("menuChange")
+	self.selectedItem=self.selectedItem+1
+	if self.selectedItem>#self.menuItems then
+		self.selectedItem=1
+	end
+	self:redraw()
+end
+
+function scene:previousMenuItem()
+	local soundManager = self.gameData.soundManager
+	soundManager.play("menuChange")
+	self.selectedItem=self.selectedItem-1
+	if self.selectedItem<1 then
+		self.selectedItem=#self.menuItems
+	end
+	self:redraw()
+end
+
 function scene:onKeyDown(theKey)
+	local soundManager = self.gameData.soundManager
+	local musicManager = self.gameData.musicManager
+	local profile = self.gameData.profile
 	if theKey=="A" then
 		storyboard.gotoScene("mainMenu","slideLeft")
+	elseif theKey=="left" then
+		self:decrementValue()
+	elseif theKey=="right" then
+		self:incrementValue()
+	elseif theKey=="up" then
+		self:nextMenuItem()
+	elseif theKey=="down" then
+		self:previousMenuItem()
 	end
 end
 
@@ -53,6 +158,7 @@ end
 
 function scene:willEnterScene( event )
     local group = self.view
+	self:redraw()
 end
 
 function scene:enterScene( event )

@@ -17,5 +17,4 @@ end
 musicManager.setVolume = function(theVolume)
 	audio.setVolume(theVolume,{channel=1})
 end
-musicManager.setVolume(0.25)
 return musicManager

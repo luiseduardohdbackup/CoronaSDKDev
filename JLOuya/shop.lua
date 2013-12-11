@@ -30,13 +30,19 @@ function scene:redraw()
 	self.board:writeText(2,3,"Prices:",asciiBoardCell.createCell(0,colors.white,colors.black))
 	for index,value in ipairs(self.menu) do
 		if index==self.selectedItem then
-			self.board:writeText(self.menuX,self.menuY+index-1,value,self.hiliteCell)
 			if profile.pennies>=self.prices[index] then
 				self.board:set(2,25,charms.oButton)
 				self.board:writeText(4,25,"Buy Item",asciiBoardCell.createCell(0,colors.white,colors.black))
+				self.board:writeText(self.menuX,self.menuY+index-1,value,self.hiliteCell)
+			else
+				self.board:writeText(self.menuX,self.menuY+index-1,value,self.disabledHiliteCell)
 			end
 		else
-			self.board:writeText(self.menuX,self.menuY+index-1,value,self.normalCell)
+			if profile.pennies>=self.prices[index] then
+				self.board:writeText(self.menuX,self.menuY+index-1,value,self.normalCell)
+			else
+				self.board:writeText(self.menuX,self.menuY+index-1,value,self.disabledCell)
+			end
 		end
 	end
 	
@@ -70,10 +76,12 @@ function scene:createScene( event )
 		"Single Serving Fish Pellet  -   10"..string.char(155),
 		"Week Supply of Fish Pellets -   50"..string.char(155),
 		"One Tank Tablet             -  100"..string.char(155),
-		"Three Tank Tables           -  250"..string.char(155),
+		"Three Tank Tablets          -  250"..string.char(155),
 	}
 	self.normalCell = asciiBoardCell.createCell(0,colors.white,colors.black)
 	self.hiliteCell = asciiBoardCell.createCell(0,colors.black,colors.white)
+	self.disabledCell = asciiBoardCell.createCell(0,colors.gray,colors.black)
+	self.disabledHiliteCell = asciiBoardCell.createCell(0,colors.black,colors.gray)
 	self.menuX=2
 	self.menuY=4
 end
@@ -81,7 +89,7 @@ end
 function scene:onKeyDown(theKey)
 	local soundManager = self.gameData.soundManager
 	if theKey=="A" then
-		soundManager:play("transition")
+		soundManager.play("transition")
 		storyboard.gotoScene("mainMenu","slideUp")
 	elseif theKey=="down" then
 		self.selectedItem=self.selectedItem+1

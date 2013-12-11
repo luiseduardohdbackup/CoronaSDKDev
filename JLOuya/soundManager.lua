@@ -10,4 +10,9 @@ soundManager.sounds={
 soundManager.play = function(name)
 	audio.play(soundManager.sounds[name])
 end
+soundManager.setVolume = function(volume)
+	for channel=audio.reservedChannels+1,audio.totalChannels do
+		audio.setVolume(volume,{channel=channel})
+	end
+end
 return soundManager

@@ -5,8 +5,10 @@ local gameData = {}
 gameData.profileManager = require("profileManager")
 gameData.profile = gameData.profileManager.loadProfile()
 gameData.musicManager = require("musicManager")
---gameData.musicManager.start()
+gameData.musicManager.start()
+gameData.musicManager.setVolume(gameData.profile.musicVolume)
 gameData.soundManager = require("soundManager")
+gameData.soundManager.setVolume(gameData.profile.soundVolume)
 gameData.player={}
 gameData.constants={}
 gameData.constants.screen={

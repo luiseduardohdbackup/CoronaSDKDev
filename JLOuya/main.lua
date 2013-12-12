@@ -30,6 +30,18 @@ gameData.constants.grid.y = (gameData.constants.screen.height-gameData.constants
 gameData.constants.leftWalls = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}
 gameData.constants.rightWalls = {48,47,46,45,44,43,42,41,40,39,38,37,36,35,34}
 gameData.constants.tailLength = 5
+gameData.speeds={
+	500,
+	400,
+	300,
+	200,
+	100,
+	90,
+	80,
+	70,
+	60,
+	50,
+}
 gameData.charms = {
 	walls={
 		asciiBoardCell.createCell(219,1,0),
@@ -53,13 +65,17 @@ gameData.charms = {
 	star = asciiBoardCell.createCell(42,6,0),
 	dude = asciiBoardCell.createCell(2,15,0),
 	life = asciiBoardCell.createCell(1,15,0),
+	nothing = asciiBoardCell.createCell(0,0,0),
 	invincibleDude = asciiBoardCell.createCell(2,11,0),
 	warningDude = asciiBoardCell.createCell(2,12,0),
 	shieldedDude = asciiBoardCell.createCell(1,1,0),
 	heart=asciiBoardCell.createCell(3,4,0),
 	diamond=asciiBoardCell.createCell(4,14,0),
 	shield=asciiBoardCell.createCell(233,1,0),
+	stopper=asciiBoardCell.createCell(234,3,0),
 	bomb=asciiBoardCell.createCell(15,8,0),
+	fish=asciiBoardCell.createCell(224,13,0),
+	reverseKeys=asciiBoardCell.createCell(63,8,0),
 	splat = asciiBoardCell.createCell(15,4,0),
 	cent = asciiBoardCell.createCell(155,2,0),
 	oButton = asciiBoardCell.createCell(string.byte("O"),2,10),

@@ -17,7 +17,16 @@ profileManager.loadProfile = function()
 				musicVolume=0.5,
 				soundVolume=0.5,
 				fish={
-					deathCount=0,
+					fight=0,
+					deaths={
+						starvation=0,
+						fights=0,
+						overfeeding=0,
+						filth=0,
+						chemicals=0,
+						tankless=0
+					},
+					killCount=0,
 					bornOn=0,
 					fedUntil=0,
 					tankSize=0,

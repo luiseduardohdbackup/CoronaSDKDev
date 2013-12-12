@@ -52,18 +52,26 @@ end
 
 function scene:startGame()
 	local player = self.gameData.player
+	local profile = self.gameData.profile
 	player.level=1
-	player.levelCounter=100
+	player.levelCounter=256
 	player.lives=3
 	player.score=0
 	player.pennies=0
+	player.gainedYBonus=false
+	player.gainedUBonus=false
 	player.charmGenerator = {
-		heart=1,
-		cent=1,
-		bomb=1,
-		shield=1,
-		life=1,
-		diamond=1,
+		heart=100,
+		cent=50,
+		bomb=250,
+		shield=50,
+		life=10,
+		diamond=100,
+		nothing=500,
+		block=500,
+		reverseKeys=100,
+		stopper=250,
+		fish=1
 	}
 	player.generatorTotal=0
 	for k,v in pairs(player.charmGenerator) do
@@ -83,6 +91,8 @@ function scene:startRun()
 	player.bombs=3
 	player.shields=0
 	player.invincible=0
+	player.blockEatCounter=0
+	player.speed=5
 	player.position=math.floor(self.gameData.constants.grid.columns/2)
 	player.direction=0
 	player.reverseKeys=0
@@ -109,7 +119,6 @@ function scene:endGame()
 	local profile = self.gameData.profile
 	local colors = self.gameData.resources.colors
 	local charms = self.gameData.charms
-	soundManager.play("gameover")
 	player.state="endGame"
 	self.field:writeText(20,10,"GAME OVER!",asciiBoardCell.createCell(0,colors.lightCyan,colors.black))
 	self.field:set(19,12,charms.oButton)
@@ -123,9 +132,19 @@ function scene:endGame()
 		self.field:writeText(25-math.floor(string.len(temp)/2),bonusLine,temp,asciiBoardCell.createCell(0,colors.lightRed,colors.black))
 		bonusLine = bonusLine+1
 	end
+
 	if player.pennies==25 and not profile.bonuses.o then
 		profile.bonuses.o=true
-		self.field:writeText(14,bonusLine,"'Shave and a Haircut' Bonus Unlocked",asciiBoardCell.createCell(0,colors.lightGreen,colors.black))
+		self.field:writeText(7,bonusLine,"'Shave and a Haircut' Bonus Unlocked",asciiBoardCell.createCell(0,colors.lightGreen,colors.black))
+		bonusLine = bonusLine+1
+		--shave and a haircut bonus
+	end
+	if player.gainedYBonus then
+		self.field:writeText(14,bonusLine,"Jericho Bonus Unlocked",asciiBoardCell.createCell(0,colors.lightCyan,colors.black))
+		bonusLine = bonusLine+1
+	end
+	if player.gainedUBonus then
+		self.field:writeText(12,bonusLine,"Ziggy Piggy Bonus Unlocked",asciiBoardCell.createCell(0,colors.lightMagenta,colors.black))
 		bonusLine = bonusLine+1
 	end
 	local oldAverage = 0
@@ -150,6 +169,9 @@ function scene:endGame()
 		profile.bonuses.a=true
 		self.field:writeText(14,bonusLine,"Lemming Bonus Unlocked",asciiBoardCell.createCell(0,colors.lightRed,colors.black))
 		bonusLine = bonusLine+1
+		--lemming bonus sound
+	else
+		soundManager.play("gameover")
 	end
 	self.gameData.profileManager.saveProfile(profile)
 end
@@ -175,6 +197,15 @@ function scene:endRun()
 	end
 end
 
+function scene:refreshSpeedTimer()
+	local player = self.gameData.player
+	if self.updateTimer~=nil then
+		timer.cancel(self.updateTimer)
+		self.updateTimer=nil
+	end
+	self.updateTimer = timer.performWithDelay(self.gameData.speeds[player.speed],self,0)
+end
+
 function scene:timer(event)
 	local profile = self.gameData.profile
 	local soundManager = self.gameData.soundManager
@@ -189,15 +220,25 @@ function scene:timer(event)
 	self.field:set(constants.rightWalls[player.level],self.field.rows,charms.walls[player.level])
 	if player.invincible>0 then
 		player.invincible=player.invincible-1
+		if player.invincible==0 then
+			if player.blockEatCounter>9 and not profile.bonuses.u then
+				profile.bonuses.u=true
+				player.gainedUBonus=true
+				self.gameData.profileManager.saveProfile(profile)
+				--gained u bonus sound
+			end
+		end
 	end
 	player.levelCounter=player.levelCounter-1
 	if player.levelCounter==0 then
-		player.levelCounter=100
+		player.levelCounter=256
 		player.level=player.level+1
 		if player.level>15 then
 			if not profile.bonuses.y then
+				player.gainedYBonus = true
 				profile.bonuses.y=true
 				self.gameData.profileManager.saveProfile(profile)
+				--gained y bonus sound
 			end
 			player.level=15
 		else
@@ -234,10 +275,10 @@ function scene:timer(event)
 	if theCell.character==219 then
 		if theCell.foreground==15 then
 			if player.invincible>0 then
-				--eat block sound
+				soundManager.play("blockEat")
 				self:addScore(10)
 			elseif player.shields>0 then
-				--shield sound
+				soundManager.play("shieldUse")
 				player.shields=player.shields-1
 			else
 				charms.splat:setBackground(theCell.foreground)
@@ -253,24 +294,38 @@ function scene:timer(event)
 		player.shields=player.shields+1
 		soundManager.play("newShield")
 	elseif theCell.character==3 then
-		player.invincible=50
+		player.invincible=64
+		player.blockEatCounter=0
 		soundManager.play("heart")
 	elseif theCell.character==4 then
 		self:addScore(100)
 		soundManager.play("diamond")
+	elseif theCell.character==234 then
+		soundManager.play("stopper")
+		player.invincible=0
+		player.shields=0
+		player.bombs=3
+		player.reverseKeys=0
+		player.speed=5
+		self:refreshSpeedTimer()
+		player.multiplier=1
+		player.divisor=1
+	elseif theCell.character==63 then
+		player.reverseKeys=player.reverseKeys+1
+		soundManager.play("reverseKeys")
 	elseif theCell.character==15 then
 		if player.bombs<99 then
 			player.bombs=player.bombs+1
 			soundManager.play("newBomb")
 		else
-			--max bombs
+			soundManager.play("maxStat")
 		end
 	elseif theCell.character==1 then
 		if player.lives<99 then
 			soundManager.play("extraLife")
 			player.lives=player.lives+1
 		else
-			--max lives
+			soundManager.play("maxStat")
 		end
 	elseif theCell.character==155 then
 		soundManager.play("cent")
@@ -288,7 +343,7 @@ end
 function scene:beginPlay()
 	local player = self.gameData.player
 	player.state="play"
-	self.updateTimer = timer.performWithDelay(100,self,0)
+	self:refreshSpeedTimer()
 end
 
 function scene:createScene( event )
@@ -352,9 +407,17 @@ function scene:onKeyDown(theKey)
 		end
 	elseif player.state=="play" then
 		if theKey=="left" then
-			player.direction=-1
+			if player.reverseKeys%2==1 then
+				player.direction=1
+			else
+				player.direction=-1
+			end
 		elseif theKey=="right" then
-			player.direction=1
+			if player.reverseKeys%2==1 then
+				player.direction=-1
+			else
+				player.direction=1
+			end
 		elseif theKey=="O" then
 			if player.bombs>0 then
 				if player.bombs>1 then

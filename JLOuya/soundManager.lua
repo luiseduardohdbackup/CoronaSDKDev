@@ -13,6 +13,14 @@ soundManager.sounds={
 	newBomb=audio.loadSound("sounds/newbomb.wav"),
 	newShield=audio.loadSound("sounds/newshield.wav"),
 	noMoreBombs=audio.loadSound("sounds/nomorebombs.wav"),
+	shieldUse=audio.loadSound("sounds/shielduse.wav"),
+	blockEat=audio.loadSound("sounds/blockeat.wav"),
+	maxStat=audio.loadSound("sounds/maxstat.wav"),
+	reverseKeys=audio.loadSound("sounds/reversekeys.wav"),
+	slowDown=audio.loadSound("sounds/slowdown.wav"),
+	speedUp=audio.loadSound("sounds/speedup.wav"),
+	stopper=audio.loadSound("sounds/stopper.wav"),
+--	=audio.loadSound("sounds/.wav"),
 }
 soundManager.play = function(name)
 	audio.play(soundManager.sounds[name])

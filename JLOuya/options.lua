@@ -5,6 +5,7 @@ local asciiBoardCell = require("ASCIIBoardCell")
 local scene = storyboard.newScene()
 
 function scene:redraw()
+	local profile = self.gameData.profile
 	self.board:clear(asciiBoardCell.createCell(0,0,0))
 
 	local columns = self.gameData.constants.grid.columns
@@ -33,6 +34,9 @@ function scene:redraw()
 			self.board:writeText(self.menuX,self.menuY+index-1,value,self.normalCell)
 		end
 	end
+	
+	self.board:writeText(25,2,tostring(profile.musicVolume),self.hiliteCell)
+	self.board:writeText(25,3,tostring(profile.soundVolume),self.hiliteCell)
 
 	self.board:render(self.grid,self.gameData.resources.colors)
 end

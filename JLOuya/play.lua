@@ -45,12 +45,30 @@ function scene:redrawFooter()
 	self.footer:render(self.grid,self.gameData.resources.colors)
 end
 
+function scene:addScore(score)
+	local player = self.gameData.player
+	player.score = player.score + score * player.multiplier / player.divisor
+end
+
 function scene:startGame()
 	local player = self.gameData.player
 	player.level=1
+	player.levelCounter=100
 	player.lives=3
 	player.score=0
 	player.pennies=0
+	player.charmGenerator = {
+		heart=1,
+		cent=1,
+		bomb=1,
+		shield=1,
+		life=1,
+		diamond=1,
+	}
+	player.generatorTotal=0
+	for k,v in pairs(player.charmGenerator) do
+		player.generatorTotal=player.generatorTotal+v
+	end
 	self:startRun()
 end
 
@@ -64,9 +82,12 @@ function scene:startRun()
 	player.state="startRun"
 	player.bombs=3
 	player.shields=0
+	player.invincible=0
 	player.position=math.floor(self.gameData.constants.grid.columns/2)
 	player.direction=0
 	player.reverseKeys=0
+	player.multiplier=1
+	player.divisor=1
 	self.fieldCell:setCharacter(0)
 	self.field:clear(self.fieldCell)
 	self.field:vLine(constants.leftWalls[player.level],1,self.field.rows,charms.walls[player.level])
@@ -155,6 +176,7 @@ function scene:endRun()
 end
 
 function scene:timer(event)
+	local profile = self.gameData.profile
 	local soundManager = self.gameData.soundManager
 	local player = self.gameData.player
 	local constants = self.gameData.constants
@@ -165,26 +187,96 @@ function scene:timer(event)
 	self.field:hLine(1,self.field.rows,self.field.columns,self.fieldCell)
 	self.field:set(constants.leftWalls[player.level],self.field.rows,charms.walls[player.level])
 	self.field:set(constants.rightWalls[player.level],self.field.rows,charms.walls[player.level])
+	if player.invincible>0 then
+		player.invincible=player.invincible-1
+	end
+	player.levelCounter=player.levelCounter-1
+	if player.levelCounter==0 then
+		player.levelCounter=100
+		player.level=player.level+1
+		if player.level>15 then
+			if not profile.bonuses.y then
+				profile.bonuses.y=true
+				self.gameData.profileManager.saveProfile(profile)
+			end
+			player.level=15
+		else
+			self.field:set(constants.leftWalls[player.level],self.field.rows,charms.walls[player.level])
+			self.field:set(constants.rightWalls[player.level],self.field.rows,charms.walls[player.level])
+		end
+	end
 	local blockPosition = math.random(constants.leftWalls[player.level]+1,constants.rightWalls[player.level]-1)
 	self.field:set(blockPosition,self.field.rows,charms.block)
-	if blockPosition>constants.leftWalls[player.level]+1 then
-		self.field:set(blockPosition-1,self.field.rows,charms.nextToBlock)
-	end
-	if blockPosition<constants.rightWalls[player.level]-1 then
-		self.field:set(blockPosition+1,self.field.rows,charms.nextToBlock)
+	if math.random(1,player.level+10)<=player.level then
+		local roll = math.random(1,player.generatorTotal)
+		local charmName
+		for k,v in pairs(player.charmGenerator) do
+			if roll>v then
+				roll = roll-v
+			else
+				charmName=k
+				break
+			end
+		end
+		blockPosition = math.random(constants.leftWalls[player.level]+1,constants.rightWalls[player.level]-1)
+		self.field:set(blockPosition,self.field.rows,charms[charmName])
 	end
 	player.position=player.position+player.direction
 	local theCell=self.field.cells[player.position][constants.tailLength+1]
 	local dudeCharm = charms.dude
+	if player.invincible>10 then
+		dudeCharm=charms.invincibleDude
+	elseif player.invincible>0 then
+		dudeCharm=charms.warningDude
+	elseif player.shields>0 then
+		dudeCharm=charms.shieldedDude
+	end
 	if theCell.character==219 then
-		charms.splat:setBackground(theCell.foreground)
-		dudeCharm=charms.splat
-		self:endRun()
-	elseif theCell.character==255 or theCell.character==155 then
+		if theCell.foreground==15 then
+			if player.invincible>0 then
+				--eat block sound
+				self:addScore(10)
+			elseif player.shields>0 then
+				--shield sound
+				player.shields=player.shields-1
+			else
+				charms.splat:setBackground(theCell.foreground)
+				dudeCharm=charms.splat
+				self:endRun()
+			end
+		else
+			charms.splat:setBackground(theCell.foreground)
+			dudeCharm=charms.splat
+			self:endRun()
+		end
+	elseif theCell.character==233 then
+		player.shields=player.shields+1
+		soundManager.play("newShield")
+	elseif theCell.character==3 then
+		player.invincible=50
+		soundManager.play("heart")
+	elseif theCell.character==4 then
+		self:addScore(100)
+		soundManager.play("diamond")
+	elseif theCell.character==15 then
+		if player.bombs<99 then
+			player.bombs=player.bombs+1
+			soundManager.play("newBomb")
+		else
+			--max bombs
+		end
+	elseif theCell.character==1 then
+		if player.lives<99 then
+			soundManager.play("extraLife")
+			player.lives=player.lives+1
+		else
+			--max lives
+		end
+	elseif theCell.character==155 then
 		soundManager.play("cent")
 		player.pennies=player.pennies+1
 	else
-		player.score=player.score+player.level
+		self:addScore(player.level)
 	end
 	self.field:set(player.position,constants.tailLength+1,dudeCharm)
 	self.field:render(self.grid,self.gameData.resources.colors)
@@ -265,17 +357,22 @@ function scene:onKeyDown(theKey)
 			player.direction=1
 		elseif theKey=="O" then
 			if player.bombs>0 then
+				if player.bombs>1 then
+					soundManager.play("bombExplode")
+				else
+					soundManager.play("lastBomb")
+				end
 				player.bombs=player.bombs-1
 				self.fieldCell:setCharacter(0)
 				for x=1,self.field.columns do
 					for y=1,self.field.rows do
 						if self.field.cells[x][y].character==219 and self.field.cells[x][y].foreground==15 then
 							self.field:set(x,y,charms.cent)
-						elseif self.field.cells[x][y].character==255 and self.field.cells[x][y].foreground==0 then
-							self.field:set(x,y,self.fieldCell)
 						end
 					end
 				end
+			else
+				soundManager.play("noMoreBombs")
 			end
 		end
 	end

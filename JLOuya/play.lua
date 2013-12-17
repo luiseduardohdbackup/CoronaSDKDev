@@ -28,6 +28,33 @@ function scene:redrawHeader()
 	self.headerCell:setCharacter(string.byte("0")+player.bombs%10)
 	self.header:set(9,1,self.headerCell)
 	
+	--shields
+	self.headerCell:setCharacter(233)
+	self.header:set(10,1,self.headerCell)
+	self.headerCell:setCharacter(string.byte("x"))
+	self.header:set(11,1,self.headerCell)
+	self.headerCell:setCharacter(string.byte("0")+math.floor(player.shields/10))
+	self.header:set(12,1,self.headerCell)
+	self.headerCell:setCharacter(string.byte("0")+player.shields%10)
+	self.header:set(13,1,self.headerCell)
+	
+	--multiplier
+	self.header:writeText(15,1,"Scorex",self.headerCell)
+	if player.multiplier==0 then
+		self.headerCell.character=48
+	else if player.multiplier==2 then
+		self.headerCell.character=50
+	else if player.multiplier==4 then
+		self.headerCell.character=52
+	else if player.divisor==2 then
+		self.headerCell.character=171
+	else if player.divisor==4 then
+		self.headerCell.character=172
+	else
+		self.headerCell.character=49
+	end
+	self.header:set(21,1,self.headerCell)
+	
 	local temp = tostring(player.score)
 	self.header:writeText(columns-string.len(temp)+1,1,temp,self.headerCell)
 	
@@ -42,6 +69,11 @@ function scene:redrawFooter()
 	self.footer:set(self.footer.columns,self.footer.rows,asciiBoardCell.createCell(155,colors.green,colors.gray))
 	local temp = tostring(player.pennies)
 	self.footer:writeText(self.footer.columns-string.len(temp),self.footer.rows,temp,asciiBoardCell.createCell(0,colors.green,colors.gray))
+	
+	--OUYA
+	
+	--JetLag
+	
 	self.footer:render(self.grid,self.gameData.resources.colors)
 end
 
@@ -71,8 +103,46 @@ function scene:startGame()
 		block=500,
 		reverseKeys=100,
 		stopper=250,
-		fish=1
+		fish=1,
+		speedUp=100,
+		slowDown=50,
+		straighten=100,
+		widen=100,
+		oneQuarter=50,
+		oneHalf=25,
+		one=10,
+		two=5,
+		four=1,
+		zero=25,
 	}
+	player.jetlag={
+		j=false,
+		e=false,
+		t=false,
+		l=false,
+		a=false,
+		g=false
+	}
+	if profile.bonuses.o then
+		player.charmGenerator.oButton=1
+	end
+	if profile.bonuses.u then
+		player.charmGenerator.uButton=1
+	end
+	if profile.bonuses.y then
+		player.charmGenerator.yButton=1
+	end
+	if profile.bonuses.a then
+		player.charmGenerator.aButton=1
+	end
+	if profile.fish.bornOn~=0 and os.time()>(profile.fish.bornOn+5184000) then
+		player.charmGenerator.jetlagJ=1
+		player.charmGenerator.jetlagE=1
+		player.charmGenerator.jetlagT=1
+		player.charmGenerator.jetlagL=1
+		player.charmGenerator.jetlagA=1
+		player.charmGenerator.jetlagG=1
+	end
 	player.generatorTotal=0
 	for k,v in pairs(player.charmGenerator) do
 		player.generatorTotal=player.generatorTotal+v
@@ -275,6 +345,7 @@ function scene:timer(event)
 	if theCell.character==219 then
 		if theCell.foreground==15 then
 			if player.invincible>0 then
+				player.blockEatCounter=player.blockEatCounter+1
 				soundManager.play("blockEat")
 				self:addScore(10)
 			elseif player.shields>0 then
@@ -293,6 +364,50 @@ function scene:timer(event)
 	elseif theCell.character==233 then
 		player.shields=player.shields+1
 		soundManager.play("newShield")
+	elseif theCell.character==48 then
+		player.multiplier=0
+		player.divisor=1
+		--x0
+	elseif theCell.character==49 then
+		player.multiplier=1
+		player.divisor=1
+		--x1
+	elseif theCell.character==50 then
+		player.multiplier=2
+		player.divisor=1
+		--x2
+	elseif theCell.character==52 then
+		player.multiplier=4
+		player.divisor=1
+		--x4
+	elseif theCell.character==171 then
+		player.multiplier=1
+		player.divisor=2
+		--x1/2
+	elseif theCell.character==172 then
+		player.multiplier=1
+		player.divisor=4
+		--x1/4
+	elseif theCell.character==24 then
+		if player.speed<#self.gameData.speeds then
+			player.speed=player.speed+1
+			soundManager.play("speedUp")
+			self:refreshSpeedTimer()
+		end
+	elseif theCell.character==25 then
+		if player.speed>1 then
+			player.speed=player.speed-1
+			soundManager.play("slowDown")
+			self:refreshSpeedTimer()
+		end
+	elseif theCell.character==18 then
+		player.direction=0
+		soundManager.play("straighten")
+	elseif theCell.character==29 then
+		if player.level>1 then
+			player.level=player.level-1
+			soundManager.play("widen")
+		end
 	elseif theCell.character==3 then
 		player.invincible=64
 		player.blockEatCounter=0
@@ -327,12 +442,40 @@ function scene:timer(event)
 		else
 			soundManager.play("maxStat")
 		end
+	elseif theCell.character==charms.oButton.character then
+		--o bonus
+	elseif theCell.character==charms.uButton.character then
+		--u bonus
+	elseif theCell.character==charms.yButton.character then
+		--y bonus
+	elseif theCell.character==charms.aButton.character then
+		--a bonus
 	elseif theCell.character==155 then
 		soundManager.play("cent")
 		player.pennies=player.pennies+1
 	else
-		self:addScore(player.level)
+		local cellN = self.field.cells[player.position][constants.tailLength]	
+		local cellS = self.field.cells[player.position][constants.tailLength+2]	
+		local cellE = self.field.cells[player.position+1][constants.tailLength+1]	
+		local cellW = self.field.cells[player.position-1][constants.tailLength+1]	
+		local cellNE = self.field.cells[player.position+1][constants.tailLength]	
+		local cellNW = self.field.cells[player.position-1][constants.tailLength]	
+		if (cellN.character==219 and cellS.character==219) or
+			(cellN.character==219 and cellE.character==219 and cellNE.character==42) or
+			(cellN.character==219 and cellW.character==219 and cellNW.character==42)
+		then
+			soundManager.play("hallelujah")
+			profile.hallelujahs=profile.hallelujahs+1
+			self:addScore(1000)
+			if profile.hallelujahs%10==0 then
+				--hallelujah bonus
+			end
+		else
+			self:addScore(player.level)
+		end
 	end
+	--OUYA
+	--JetLag
 	self.field:set(player.position,constants.tailLength+1,dudeCharm)
 	self.field:render(self.grid,self.gameData.resources.colors)
 	self:redrawHeader()

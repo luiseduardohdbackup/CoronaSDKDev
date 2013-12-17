@@ -39,8 +39,15 @@ profileManager.loadProfile = function()
 					o=false,
 					u=false,
 					y=false,
-					a=false,
-					jetLag=false
+					a=false
+				},
+				hints={
+					lemming=false,
+					haircut=false,
+					jetlag=false,
+					hallelujah=false,
+					jericho=false,
+					ziggyPiggy=false
 				}
 			}
 	end

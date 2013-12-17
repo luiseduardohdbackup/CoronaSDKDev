@@ -20,6 +20,11 @@ soundManager.sounds={
 	slowDown=audio.loadSound("sounds/slowdown.wav"),
 	speedUp=audio.loadSound("sounds/speedup.wav"),
 	stopper=audio.loadSound("sounds/stopper.wav"),
+	widen=audio.loadSound("sounds/widen.wav"),
+	straighten=audio.loadSound("sounds/straighten.wav"),
+	hallelujah=audio.loadSound("sounds/hallelujah.wav"),
+--	=audio.loadSound("sounds/.wav"),
+--	=audio.loadSound("sounds/.wav"),
 --	=audio.loadSound("sounds/.wav"),
 }
 soundManager.play = function(name)

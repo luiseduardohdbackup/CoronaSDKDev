@@ -30,30 +30,30 @@ function scene:redrawHeader()
 	
 	--shields
 	self.headerCell:setCharacter(233)
-	self.header:set(10,1,self.headerCell)
-	self.headerCell:setCharacter(string.byte("x"))
 	self.header:set(11,1,self.headerCell)
-	self.headerCell:setCharacter(string.byte("0")+math.floor(player.shields/10))
+	self.headerCell:setCharacter(string.byte("x"))
 	self.header:set(12,1,self.headerCell)
-	self.headerCell:setCharacter(string.byte("0")+player.shields%10)
+	self.headerCell:setCharacter(string.byte("0")+math.floor(player.shields/10))
 	self.header:set(13,1,self.headerCell)
+	self.headerCell:setCharacter(string.byte("0")+player.shields%10)
+	self.header:set(14,1,self.headerCell)
 	
 	--multiplier
-	self.header:writeText(15,1,"Scorex",self.headerCell)
+	self.header:writeText(16,1,"Scorex",self.headerCell)
 	if player.multiplier==0 then
 		self.headerCell.character=48
-	else if player.multiplier==2 then
+	elseif player.multiplier==2 then
 		self.headerCell.character=50
-	else if player.multiplier==4 then
+	elseif player.multiplier==4 then
 		self.headerCell.character=52
-	else if player.divisor==2 then
+	elseif player.divisor==2 then
 		self.headerCell.character=171
-	else if player.divisor==4 then
+	elseif player.divisor==4 then
 		self.headerCell.character=172
 	else
 		self.headerCell.character=49
 	end
-	self.header:set(21,1,self.headerCell)
+	self.header:set(22,1,self.headerCell)
 	
 	local temp = tostring(player.score)
 	self.header:writeText(columns-string.len(temp)+1,1,temp,self.headerCell)
@@ -79,7 +79,7 @@ end
 
 function scene:addScore(score)
 	local player = self.gameData.player
-	player.score = player.score + score * player.multiplier / player.divisor
+	player.score = player.score + math.floor(score * player.multiplier / player.divisor)
 end
 
 function scene:startGame()
@@ -207,7 +207,7 @@ function scene:endGame()
 		profile.bonuses.o=true
 		self.field:writeText(7,bonusLine,"'Shave and a Haircut' Bonus Unlocked",asciiBoardCell.createCell(0,colors.lightGreen,colors.black))
 		bonusLine = bonusLine+1
-		--shave and a haircut bonus
+		soundManager.play("obonus")
 	end
 	if player.gainedYBonus then
 		self.field:writeText(14,bonusLine,"Jericho Bonus Unlocked",asciiBoardCell.createCell(0,colors.lightCyan,colors.black))
@@ -239,7 +239,7 @@ function scene:endGame()
 		profile.bonuses.a=true
 		self.field:writeText(14,bonusLine,"Lemming Bonus Unlocked",asciiBoardCell.createCell(0,colors.lightRed,colors.black))
 		bonusLine = bonusLine+1
-		--lemming bonus sound
+		soundManager.play("abonus")
 	else
 		soundManager.play("gameover")
 	end
@@ -295,7 +295,7 @@ function scene:timer(event)
 				profile.bonuses.u=true
 				player.gainedUBonus=true
 				self.gameData.profileManager.saveProfile(profile)
-				--gained u bonus sound
+				soundManager.play("ubonus")
 			end
 		end
 	end
@@ -308,7 +308,7 @@ function scene:timer(event)
 				player.gainedYBonus = true
 				profile.bonuses.y=true
 				self.gameData.profileManager.saveProfile(profile)
-				--gained y bonus sound
+				soundManager.play("ybonus")
 			end
 			player.level=15
 		else
@@ -367,27 +367,27 @@ function scene:timer(event)
 	elseif theCell.character==48 then
 		player.multiplier=0
 		player.divisor=1
-		--x0
+		soundManager.play("zero")
 	elseif theCell.character==49 then
 		player.multiplier=1
 		player.divisor=1
-		--x1
+		soundManager.play("one")
 	elseif theCell.character==50 then
 		player.multiplier=2
 		player.divisor=1
-		--x2
+		soundManager.play("two")
 	elseif theCell.character==52 then
 		player.multiplier=4
 		player.divisor=1
-		--x4
+		soundManager.play("four")
 	elseif theCell.character==171 then
 		player.multiplier=1
 		player.divisor=2
-		--x1/2
+		soundManager.play("onehalf")
 	elseif theCell.character==172 then
 		player.multiplier=1
 		player.divisor=4
-		--x1/4
+		soundManager.play("onequarter")
 	elseif theCell.character==24 then
 		if player.speed<#self.gameData.speeds then
 			player.speed=player.speed+1
@@ -442,14 +442,30 @@ function scene:timer(event)
 		else
 			soundManager.play("maxStat")
 		end
+	elseif theCell.character==charms.jetlagJ.character then
+		--J
+	elseif theCell.character==charms.jetlagE.character then
+		--e
+	elseif theCell.character==charms.jetlagT.character then
+		--t
+	elseif theCell.character==charms.jetlagL.character then
+		--L
+	elseif theCell.character==charms.jetlagA.character then
+		--a
+	elseif theCell.character==charms.jetlagG.character then
+		--g
 	elseif theCell.character==charms.oButton.character then
 		--o bonus
+		soundManager.play("obonus")
 	elseif theCell.character==charms.uButton.character then
 		--u bonus
+		soundManager.play("ubonus")
 	elseif theCell.character==charms.yButton.character then
 		--y bonus
+		soundManager.play("ybonus")
 	elseif theCell.character==charms.aButton.character then
 		--a bonus
+		soundManager.play("abonus")
 	elseif theCell.character==155 then
 		soundManager.play("cent")
 		player.pennies=player.pennies+1
@@ -469,6 +485,9 @@ function scene:timer(event)
 			self:addScore(1000)
 			if profile.hallelujahs%10==0 then
 				--hallelujah bonus
+				soundManager.play("hallelujahbonus")
+			else
+				soundManager.play("hallelujah")
 			end
 		else
 			self:addScore(player.level)

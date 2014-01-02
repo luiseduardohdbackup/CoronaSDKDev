@@ -23,6 +23,9 @@ function scene:redraw()
 	self.board:vLine(1,2,rows-2,asciiBoardCell.createCell(186,colors.blue,colors.lightGray))
 	self.board:vLine(columns,2,rows-2,asciiBoardCell.createCell(186,colors.blue,colors.lightGray))
 	
+	self.board:writeText(2,23,"D-pad Up/Down: select setting",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+	self.board:writeText(2,24,"D-pad Right/Left: change setting",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+	
 	self.board:writeText(2,2,"Options",asciiBoardCell.createCell(0,colors.white,colors.black))
 	self.board:writeText(2,26,"A",asciiBoardCell.createCell(0,colors.red,colors.lightRed))
 	self.board:writeText(4,26,"Go Back",asciiBoardCell.createCell(0,colors.white,colors.black))
@@ -35,8 +38,10 @@ function scene:redraw()
 		end
 	end
 	
-	self.board:writeText(25,2,tostring(profile.musicVolume),self.hiliteCell)
-	self.board:writeText(25,3,tostring(profile.soundVolume),self.hiliteCell)
+	self.board:hLine(25,4,10,asciiBoardCell.createCell(0,0,8))
+	self.board:hLine(25,5,10,asciiBoardCell.createCell(0,0,8))
+	self.board:hLine(25,4,math.floor(10*profile.musicVolume),asciiBoardCell.createCell(0,0,2))
+	self.board:hLine(25,5,math.floor(10*profile.soundVolume),asciiBoardCell.createCell(0,0,2))
 
 	self.board:render(self.grid,self.gameData.resources.colors)
 end
@@ -56,8 +61,8 @@ function scene:createScene( event )
 	self.board = asciiBoard.createBoard(1,1,self.gameData.constants.grid.columns,self.gameData.constants.grid.rows)
 	
 	local colors = self.gameData.resources.colors
-	self.menuX=2
-	self.menuY=2
+	self.menuX=12
+	self.menuY=4
 	self.menuItems={
 		"Music Volume",
 		"Sound Volume",

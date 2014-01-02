@@ -1,4 +1,4 @@
-display.setDefault("background",85,85,85)
+display.setDefault("background",0.333,0.333,0.333)
 local asciiBoardCell = require("ASCIIBoardCell")
 
 local gameData = {}

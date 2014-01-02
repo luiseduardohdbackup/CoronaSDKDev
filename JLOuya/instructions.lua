@@ -36,6 +36,16 @@ function scene:createScene( event )
 	self.board:vLine(columns,2,rows-2,asciiBoardCell.createCell(186,colors.blue,colors.lightGray))
 	
 	self.board:writeText(2,2,"Instructions",asciiBoardCell.createCell(0,colors.white,colors.black))
+
+	self.board:writeText(2,4,"Controls are simple:",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+	self.board:writeText(2,5,"R1, R2, R3 and D-pad Right to go right",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+	self.board:writeText(2,6,"L2, L2, L3 and D-pad Left to go left",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+	self.board:writeText(2,8,"O button for bombs",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+	self.board:writeText(2,10,"Generally, avoid blocks.",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+	self.board:writeText(2,12,"Powerups show up. Some help. Some don't.",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+	self.board:writeText(2,14,"Good luck!",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+
+
 	self.board:writeText(2,26,"A",asciiBoardCell.createCell(0,colors.red,colors.lightRed))
 	self.board:writeText(4,26,"Go Back",asciiBoardCell.createCell(0,colors.white,colors.black))
 

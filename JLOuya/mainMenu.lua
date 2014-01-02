@@ -19,13 +19,10 @@ function scene:redraw()
 	local columns = self.gameData.constants.grid.columns
 	local rows = self.gameData.constants.grid.rows
 	local colors = self.gameData.resources.colors
+	local profile = self.gameData.profile
 
 	self.board:clear(asciiBoardCell.createCell(0,0,0))
 
-	local columns = self.gameData.constants.grid.columns
-	local rows = self.gameData.constants.grid.rows
-	local colors = self.gameData.resources.colors
-	
 	self.board:set(1,1,asciiBoardCell.createCell(201,colors.blue,colors.lightGray))
 	self.board:set(1,rows,asciiBoardCell.createCell(200,colors.blue,colors.lightGray))
 	self.board:set(columns,1,asciiBoardCell.createCell(187,colors.blue,colors.lightGray))
@@ -40,6 +37,14 @@ function scene:redraw()
 	self.board:set(columns-1,rows-1,asciiBoardCell.createCell(155,colors.green,colors.black))
 	local temp = tostring(self.gameData.profile.pennies)
 	self.board:writeText(columns-1-string.len(temp),rows-1,temp,asciiBoardCell.createCell(0,colors.green,colors.black))
+	
+	self.board:writeText(20,2,"High:"..tostring(profile.highScore),asciiBoardCell.createCell(0,colors.green,colors.black))
+	self.board:writeText(19,3,"Games:"..tostring(profile.gamesPlayed),asciiBoardCell.createCell(0,colors.green,colors.black))
+	local averageScore = 0
+	if profile.gamesPlayed>0 then
+		averageScore=math.floor(profile.totalScore/profile.gamesPlayed)
+	end
+	self.board:writeText(17,4,"Average:"..averageScore,asciiBoardCell.createCell(0,colors.green,colors.black))
 	
 	self:renderMenu()
 end
@@ -73,8 +78,8 @@ function scene:createScene( event )
 		"  Instructions  ",
 		"    Options     ",
 		"     About      ",
-		"      Shop      ",
-		"    Feed Fish   ",
+		--"      Shop      ",
+		--"    Feed Fish   ",
 		"      Quit      "
 	}
 	self.nextScenes={
@@ -82,8 +87,8 @@ function scene:createScene( event )
 		"instructions",
 		"options",
 		"about",
-		"shop",
-		"feedTheFish",
+		--"shop",
+		--"feedTheFish",
 		"quit"
 	}
 	self.transitions={
@@ -91,8 +96,8 @@ function scene:createScene( event )
 		"slideLeft",
 		"slideRight",
 		"slideUp",
-		"slideDown",
-		"flip",
+		--"slideDown",
+		--"flip",
 		"crossFade"
 	}
 

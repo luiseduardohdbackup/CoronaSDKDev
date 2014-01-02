@@ -36,6 +36,12 @@ function scene:createScene( event )
 	self.board:vLine(columns,2,rows-2,asciiBoardCell.createCell(186,colors.blue,colors.lightGray))
 	
 	self.board:writeText(2,2,"About JetLag",asciiBoardCell.createCell(0,colors.white,colors.black))
+	
+	self.board:writeText(2,4,"Written by Ernest Pazera",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+	self.board:writeText(2,5,"ernestpazera@gmail.com",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+
+	self.board:writeText(2,7,"Music CC-BY-SA http://bit.ly/19DB0EM",asciiBoardCell.createCell(0,colors.lightGray,colors.black))
+
 	self.board:writeText(2,26,"A",asciiBoardCell.createCell(0,colors.red,colors.lightRed))
 	self.board:writeText(4,26,"Go Back",asciiBoardCell.createCell(0,colors.white,colors.black))
 

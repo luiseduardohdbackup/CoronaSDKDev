@@ -1,5 +1,8 @@
 local storyboard = require( "storyboard" )
 local board=require "board"
+local gameBoard=require "gameBoard"
+local directions=require "directions"
+local slots=require "slots"
 local scene = storyboard.newScene()
 
 function scene:createScene( event )
@@ -13,11 +16,41 @@ function scene:createScene( event )
 		x=100,
 		y=100
 	})
-	self.board=board.newBoard(group,self.gameData.dataBoard,0,0,108,108)
+	self.gameBoard=gameBoard.newGameBoard(self.gameData.dataBoard)
+	self.gameBoard:updateHints()
+	self.board=board.newBoard(group,self.gameBoard,54,54,108,108)
+	self.board:update()
+	self.slots=slots.newSlots(group,self.gameBoard,108*9,54,directions.south,108)
+	self.slots:update()
 	self.board:update()
 end
 
 function scene:onKeyDown(theKey)
+	if theKey=="up" then
+		self.gameBoard:moveCursor(directions.north)
+		self.board:update()
+	elseif theKey=="down" then
+		self.gameBoard:moveCursor(directions.south)
+		self.board:update()
+	elseif theKey=="left" then
+		self.gameBoard:moveCursor(directions.west)
+		self.board:update()
+	elseif theKey=="right" then
+		self.gameBoard:moveCursor(directions.east)
+		self.board:update()
+	elseif theKey=="O" then
+		self.gameBoard:placeAtom()
+		self.slots:update()
+		self.board:update()
+	elseif theKey=="U" then
+		self.gameBoard:rotateCurrentSlotCW()
+		self.slots:update()
+		self.board:update()
+	elseif theKey=="Y" then
+		self.gameBoard:nextSlot()
+		self.slots:update()
+		self.board:update()
+	end
 end
 
 function scene:onKeyUp(theKey)
